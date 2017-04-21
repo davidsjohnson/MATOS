@@ -1,0 +1,20 @@
+//
+// Created by David Johnson on 4/19/17.
+//
+
+#ifndef MATO_COMMON_H
+#define MATO_COMMON_H
+
+#include <vector>
+#include <iostream>
+#include <map>
+#include <string>
+#include <functional>
+
+#include "oscpack/osc/OscReceivedElements.h"
+
+using namespace std;
+
+typedef std::function<void(const osc::ReceivedMessage& message)> callbackFunction;
+
+#endif //MATO_COMMON_H

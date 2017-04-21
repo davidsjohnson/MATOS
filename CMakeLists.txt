@@ -1,0 +1,20 @@
+cmake_minimum_required(VERSION 3.6)
+project(MATO)
+
+set(CMAKE_CXX_STANDARD 11)
+
+include_directories(include)
+include_directories(/usr/local/include)
+include_directories(/usr/local/include/libpd)
+include_directories(/usr/local/include/rtaudio)
+link_directories(/usr/local/lib)
+
+set(SOURCE_FILES src/main.cpp src/Audio/PdObject.cpp include/PdObject.h /
+        src/BDI/Interpreter.cpp include/Interpreter.h src/Audio/PdPatch.cpp /
+        include/PdPatch.h src/Agent.cpp include/Agent.h src/BDI/Beliefs.cpp /
+        include/Beliefs.h src/BDI/Goals.cpp include/Goals.h src/BDI/OptionGenerator.cpp /
+        include/OptionGenerator.h src/Monitor/OscListener.cpp include/OscListener.h /
+        include/Monitor.h include/common.h src/Monitor/OscMonitor.cpp include/OscMonitor.h /
+        include/cxxopts.hpp)
+add_executable(MATO ${SOURCE_FILES})
+target_link_libraries(MATO pd pdcpp rtaudio oscpack)

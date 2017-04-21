@@ -1,0 +1,10 @@
+#N canvas 1960 218 450 300 10;
+#X obj 188 170 sendOSC;
+#X msg 241 49 connect localhost 7000;
+#X msg 46 28 send /tempo/1 string;
+#X msg 28 63 send /tempo/2 15;
+#X msg 43 97 send /tempo/3 15.5;
+#X connect 1 0 0 0;
+#X connect 2 0 0 0;
+#X connect 3 0 0 0;
+#X connect 4 0 0 0;
