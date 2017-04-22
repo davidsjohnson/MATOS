@@ -4,6 +4,23 @@
 
 #include "Agent.h"
 
+#include  <random>
+#include  <iterator>
+
+template<typename Iter, typename RandomGenerator>
+Iter select_randomly(Iter start, Iter end, RandomGenerator& g) {
+    std::uniform_int_distribution<> dis(0, std::distance(start, end) - 1);
+    std::advance(start, dis(g));
+    return start;
+}
+
+template<typename Iter>
+Iter select_randomly(Iter start, Iter end) {
+    static std::random_device rd;
+    static std::mt19937 gen(rd());
+    return select_randomly(start, end, gen);
+}
+
 Agent::Agent(int agentID, map<int, string> neighbors, const string& pdFile, const int& oscPort) :
     id(agentID), oscPort(oscPort), patchFile(pdFile),
     neighbors(neighbors), patch(pdFile), bdi(),
@@ -33,15 +50,45 @@ Agent::Agent(int agentID, map<int, string> neighbors, const string& pdFile, cons
 
     oscMonitor.addFunction("/tempo/.*", tempoFunc);
 
-    // Setup Some Goals
-    goals.push_back( Goal({"myTempo", "==", "blfTempo"}) );
+    // TODO:  These should come from beliefs database
+    map<string, int> params;
+    params["myTempo"] = 90;
+    params["blfTempo"] = 45;
 
-    goals.push_back( Goal({"myTempo", "==", "blfTempo", "/", "2"}) );
-    goals.push_back( Goal({"myTempo", "==", "blfTempo", "/", "3"}) );
-    goals.push_back( Goal({"myTempo", "==", "blfTempo", "/", "4"}) );
-    goals.push_back( Goal({"myTempo", "==", "blfTempo", "*", "2"}) );
-    goals.push_back( Goal({"myTempo", "==", "blfTempo", "*", "3"}) );
-    goals.push_back( Goal({"myTempo", "==", "blfTempo", "*", "4"}) );
+    // Example Callback for Goals
+    function<void(bool result, const Goal& g)> tempoCallback = [this, params](bool result, const Goal& g){
+
+        if (result){
+            cout << "Goal Meet" << endl;
+        }
+        else{
+            cout << "Goal Not Meet: " << g << endl;
+//            patch.sendTempo(params.at("myTempo")/2);
+        }
+    };
+
+    // Setup Some Goals
+    goals.push_back( Goal({"myTempo", "==", "blfTempo"}, tempoCallback) );
+    goals.push_back( Goal({"myTempo", "==", "blfTempo", "/", "2"}, tempoCallback) );
+    goals.push_back( Goal({"myTempo", "==", "blfTempo", "/", "3"}, tempoCallback) );
+    goals.push_back( Goal({"myTempo", "==", "blfTempo", "/", "4"}, tempoCallback) );
+    goals.push_back( Goal({"myTempo", "==", "blfTempo", "*", "2"}, tempoCallback) );
+    goals.push_back( Goal({"myTempo", "==", "blfTempo", "*", "3"}, tempoCallback) );
+    goals.push_back( Goal({"myTempo", "==", "blfTempo", "*", "4"}, tempoCallback) );
+
+    // TODO: Fix for "And" Goals and "Or" Goals
+    // TODO: Add to Interpreter
+    vector<Goal> options;
+
+    for (Goal g : goals){
+        if ( !g.evaluate(params) ){
+            options.push_back(g);
+        }
+    }
+
+    Goal g = *(select_randomly(options.begin(), options.end()));
+
+    g.runFunction(params);
 
 }
 

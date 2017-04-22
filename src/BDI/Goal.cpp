@@ -37,12 +37,13 @@ bool evaluateCondition(int operand1, int operand2, string op){
     return true;
 }
 
-Goal::Goal() :
-        outputQueue()
+
+Goal::Goal(function<void(bool result, const Goal& g)> callback) :
+    callback(callback), outputQueue()
 {}
 
-Goal::Goal(vector<string> infixExpression) :
-        outputQueue()
+Goal::Goal(vector<string> infixExpression, function<void(bool result, const Goal& g)> callback) :
+    callback(callback), outputQueue()
 {
     setExpression(infixExpression);
 }
@@ -75,7 +76,7 @@ void Goal::setExpression(vector<string> infixExpression) {
 }
 
 
-bool Goal::evaluate(map<string, int> parameterMap){
+bool Goal::evaluate(map<string, int> params){
 
     if (outputQueue.empty())
         throw exception();
@@ -104,14 +105,14 @@ bool Goal::evaluate(map<string, int> parameterMap){
             int o2;
 
             try {
-                o1 = parameterMap.at(operand1);
+                o1 = params.at(operand1);
             }
             catch(exception e){
                 o1 = stoi(operand1);
             }
 
             try {
-                o2 = parameterMap.at(operand2);
+                o2 = params.at(operand2);
             }
             catch(exception e){
                 o2 = stoi(operand2);
@@ -123,12 +124,17 @@ bool Goal::evaluate(map<string, int> parameterMap){
                 evalStack.push(to_string(value));
             }
             else{
-                return evaluateCondition(o1, o2, op);
+                bool result = evaluateCondition(o1, o2, op);
+                return result;
             }
         }
 
     }
     return false;
+}
+
+void Goal::runFunction(map<string,int> params) {
+    callback(evaluate(params), *this);
 }
 
 
@@ -139,3 +145,5 @@ ostream&operator<<(ostream& os, const Goal& goal){
     }
     return os;
 }
+
+

@@ -4,11 +4,16 @@
 
 #include "Interpreter.h"
 
+Interpreter::Interpreter() :
+    m_beliefs(), m_goals(), m_og()
+{}
+
+
 void Interpreter::registerBeliefs(Beliefs beliefs) {
     m_beliefs = beliefs;
 }
 
-void Interpreter::registerGoals(Goal goals) {
+void Interpreter::registerGoals(vector<Goal> goals) {
     m_goals = goals;
 }
 
@@ -21,3 +26,4 @@ void Interpreter::update() {
     vector<Option> options;
     m_og.generateOptions(options);
 }
+

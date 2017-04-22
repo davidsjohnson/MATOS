@@ -7,20 +7,22 @@
 
 #include "Beliefs.h"
 #include "Goal.h"
-#include "OptionGenerator.h"
+#include "ActionGenerator.h"
 
 class Interpreter {
 
 public:
+    Interpreter();
+
     void registerBeliefs(Beliefs beliefs);
-    void registerGoals(Goal goals);
+    void registerGoals(vector<Goal> goals);
     void registerOptionGenerator(OptionGenerator og);
 
     void update();
 
 private:
     Beliefs         m_beliefs;
-    Goal           m_goals;
+    vector<Goal>    m_goals;
     OptionGenerator m_og;
 
 };

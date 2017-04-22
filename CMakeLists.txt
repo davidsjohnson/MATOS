@@ -12,9 +12,9 @@ link_directories(/usr/local/lib)
 set(SOURCE_FILES src/main.cpp src/PdAudio/PdObject.cpp include/PdObject.h /
         src/BDI/Interpreter.cpp include/Interpreter.h src/PdAudio/PdPatch.cpp /
         include/PdPatch.h src/Agent.cpp include/Agent.h src/BDI/Beliefs.cpp /
-        include/Beliefs.h src/BDI/Goal.cpp include/Goal.h src/BDI/OptionGenerator.cpp /
-        include/OptionGenerator.h src/Input/OscListener.cpp include/OscListener.h /
+        include/Beliefs.h src/BDI/Goal.cpp include/Goal.h src/BDI/ActionGenerator.cpp /
+        include/ActionGenerator.h src/Input/OscListener.cpp include/OscListener.h /
         include/Monitor.h include/common.h src/Monitor/OscMonitor.cpp include/OscMonitor.h /
-        include/cxxopts.hpp)
+        include/cxxopts.hpp src/BDI/Action.cpp include/Action.h)
 add_executable(MATO ${SOURCE_FILES})
 target_link_libraries(MATO pd pdcpp rtaudio oscpack)
