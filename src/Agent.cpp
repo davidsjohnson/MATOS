@@ -33,13 +33,15 @@ Agent::Agent(int agentID, map<int, string> neighbors, const string& pdFile, cons
 
     oscMonitor.addFunction("/tempo/.*", tempoFunc);
 
-    map<string, int> params;
-    params["x"] = 6;
-    params["y"] = 0;
+    // Setup Some Goals
+    goals.push_back( Goal({"myTempo", "==", "blfTempo"}) );
 
-    Goal g({"x", "-", "5", "==", "y", "+", "1"});
-    cout << "Goal: " << g << endl;
-    cout << "\tResult: " << g.evaluate(params) << endl;
+    goals.push_back( Goal({"myTempo", "==", "blfTempo", "/", "2"}) );
+    goals.push_back( Goal({"myTempo", "==", "blfTempo", "/", "3"}) );
+    goals.push_back( Goal({"myTempo", "==", "blfTempo", "/", "4"}) );
+    goals.push_back( Goal({"myTempo", "==", "blfTempo", "*", "2"}) );
+    goals.push_back( Goal({"myTempo", "==", "blfTempo", "*", "3"}) );
+    goals.push_back( Goal({"myTempo", "==", "blfTempo", "*", "4"}) );
 
 }
 

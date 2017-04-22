@@ -28,8 +28,10 @@ private:
     map<int, string>    neighbors;
 
     PdPatch         patch;
-    Interpreter     bdi;
     OscMonitor      oscMonitor;
+
+    // BDI objects
+    Interpreter     bdi;
     Beliefs         beliefs;
     vector<Goal>    goals;
 
