@@ -27,10 +27,11 @@ private:
     string              patchFile;
     map<int, string>    neighbors;
 
-    PdPatch     patch;
-    Interpreter bdi;
-    OscMonitor  monitor;
-    Beliefs     beliefs;
+    PdPatch         patch;
+    Interpreter     bdi;
+    OscMonitor      oscMonitor;
+    Beliefs         beliefs;
+    vector<Goal>    goals;
 
     friend ostream& operator<<(ostream& os, const Agent& agent);
 };

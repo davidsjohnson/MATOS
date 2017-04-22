@@ -6,21 +6,21 @@
 #define MATO_BDI_INTERPRETER_H
 
 #include "Beliefs.h"
-#include "Goals.h"
+#include "Goal.h"
 #include "OptionGenerator.h"
 
 class Interpreter {
 
 public:
     void registerBeliefs(Beliefs beliefs);
-    void registerGoals(Goals goals);
+    void registerGoals(Goal goals);
     void registerOptionGenerator(OptionGenerator og);
 
     void update();
 
 private:
     Beliefs         m_beliefs;
-    Goals           m_goals;
+    Goal           m_goals;
     OptionGenerator m_og;
 
 };

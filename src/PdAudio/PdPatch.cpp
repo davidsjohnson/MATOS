@@ -15,7 +15,7 @@ int audioCallback(void *outputBuffer, void *inputBuffer, unsigned int nBufferFra
 };
 
 void errorCallback(RtAudioError::Type type, const string& errorText){
-    cerr << "Audio Error: " << errorText << endl;
+    cerr << "PdAudio Error: " << errorText << endl;
 };
 
 

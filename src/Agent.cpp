@@ -7,8 +7,10 @@
 Agent::Agent(int agentID, map<int, string> neighbors, const string& pdFile, const int& oscPort) :
     id(agentID), oscPort(oscPort), patchFile(pdFile),
     neighbors(neighbors), patch(pdFile), bdi(),
-    monitor(oscPort), beliefs()
+    oscMonitor(oscPort), beliefs()
 {
+
+    // Adding Callback Function for Receiving Tempo Input Messages
     callbackFunction tempoFunc = [&](const osc::ReceivedMessage& message) {
 
         osc::ReceivedMessageArgumentIterator arg = message.ArgumentsBegin();
@@ -24,16 +26,26 @@ Agent::Agent(int agentID, map<int, string> neighbors, const string& pdFile, cons
             throw osc::WrongArgumentTypeException();
         }
 
+        // Add (or update) a belief for Tempo message from a neighbor
         beliefs.addBelief(message.AddressPattern(), make_shared<Belief>("tempo", tempo));
         cout << beliefs << endl;
     };
 
-    monitor.addFunction("/tempo/.*", tempoFunc);
+    oscMonitor.addFunction("/tempo/.*", tempoFunc);
+
+    map<string, int> params;
+    params["x"] = 6;
+    params["y"] = 0;
+
+    Goal g({"x", "-", "5", "==", "y", "+", "1"});
+    cout << "Goal: " << g << endl;
+    cout << "\tResult: " << g.evaluate(params) << endl;
+
 }
 
 void Agent::start() {
     patch.sendStart();
-    monitor.start();
+    oscMonitor.start();
 }
 
 

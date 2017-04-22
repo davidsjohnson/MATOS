@@ -1,4 +1,3 @@
-#include <unistd.h>
 #include "Agent.h"
 #include "cxxopts.hpp"
 
@@ -23,6 +22,7 @@ int main(int argc, char* argv[]) {
 
     options.parse(argc, argv);
 
+    // TODO:  Add Error Handling and Help Messages
     int agentID = options["i"].as<int>();
     int oscPort = options["o"].as<int>();
     string pdFile = options["p"].as<string>();
@@ -31,8 +31,9 @@ int main(int argc, char* argv[]) {
     // TODO:  Implement loading neighbors file
     map<int, string> neighbors;
 
+    // Starting Agent with Parameters from Command Line
     Agent agent(agentID, neighbors, pdFile, oscPort);
-    cout << "Starting Agent:\n";
+    cout << "Started Agent:\n";
     cout << agent << endl;
     agent.start();
 

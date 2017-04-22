@@ -8,7 +8,7 @@ void Interpreter::registerBeliefs(Beliefs beliefs) {
     m_beliefs = beliefs;
 }
 
-void Interpreter::registerGoals(Goals goals) {
+void Interpreter::registerGoals(Goal goals) {
     m_goals = goals;
 }
 
