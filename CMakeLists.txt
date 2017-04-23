@@ -11,8 +11,8 @@ link_directories(/usr/local/lib)
 
 set(SOURCE_FILES src/main.cpp src/PdAudio/PdObject.cpp include/PdObject.h /
         src/BDI/Interpreter.cpp include/Interpreter.h src/PdAudio/PdPatch.cpp /
-        include/PdPatch.h src/Agent.cpp include/Agent.h src/BDI/Beliefs.cpp /
-        include/Beliefs.h src/BDI/Goal.cpp include/Goal.h src/BDI/ActionGenerator.cpp /
+        include/PdPatch.h src/Agent.cpp include/Agent.h src/BDI/Belief.cpp /
+        include/Belief.h src/BDI/Goal.cpp include/Goal.h src/BDI/ActionGenerator.cpp /
         include/ActionGenerator.h src/Input/OscListener.cpp include/OscListener.h /
         include/Monitor.h include/common.h src/Monitor/OscMonitor.cpp include/OscMonitor.h /
         include/cxxopts.hpp src/BDI/Action.cpp include/Action.h)

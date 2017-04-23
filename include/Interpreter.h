@@ -5,27 +5,24 @@
 #ifndef MATO_BDI_INTERPRETER_H
 #define MATO_BDI_INTERPRETER_H
 
-#include "Beliefs.h"
+#include "Belief.h"
 #include "Goal.h"
 #include "ActionGenerator.h"
 
 class Interpreter {
 
 public:
-    Interpreter();
-
-    void registerBeliefs(Beliefs beliefs);
-    void registerGoals(vector<Goal> goals);
-    void registerOptionGenerator(OptionGenerator og);
+    Interpreter() : m_beliefs(), m_goals() {}
+    Interpreter(map<string, shared_ptr<Belief>> beliefs, vector<Goal> goals);
 
     void update();
+    void start();
 
 private:
-    Beliefs         m_beliefs;
-    vector<Goal>    m_goals;
-    OptionGenerator m_og;
+    map<string, shared_ptr<Belief>> m_beliefs;
+    vector<Goal>                    m_goals;
+    map<string, int>                m_blfParams;
 
 };
-
 
 #endif //MATO_BDI_INTERPRETER_H

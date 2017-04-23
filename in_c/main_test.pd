@@ -3414,7 +3414,7 @@ change color from grey to green for a brief moment. All parameter values
 are now written to textfiles and can be loaded to the equivalent module
 and instance number next time the patch is loaded.;
 #X text 404 245 8 You can call modules without using the module list
-simply by creating a new object in pd and type the module's name. For
+simply by creating a new object in pd and type the module's paramName. For
 the state saving mechanism to work properly you do need to give the
 module a unique numerical argument. Type "basic-osc 1" for an oscillator
 and "basic-osc 2" if you need another one. By using the MODULES list
@@ -3423,7 +3423,7 @@ link in the upper left corner when starting a new patch as this will
 reset the counter of unique numbers for modules.;
 #X text 397 403 9 IMPORTANT!!! In order for Automatonism to work properly
 \, each patch needs to contain the correct folder structure. A folder--that
-you can name freely--must contain the folder "patch_editor_abs" and
+you can paramName freely--must contain the folder "patch_editor_abs" and
 the pd-file "main.pd". Copy the entire main parent folder to start
 a new project. Please do not add the abstractions to your PD Search
 path \, because the state svaing system will be writing textfiles in
@@ -3822,7 +3822,7 @@ more elaborate pd-code for deeper control.;
 stay named the same for the playGROUND to function properly. Also \,
 each of your projects/patches needs tp be in a separet folder with
 its own "main.pd" and "patch_editor_abs" folder. Copy & paste the project
-folder \, which you can give any name \, when you want to start a new
+folder \, which you can give any paramName \, when you want to start a new
 project/patch.;
 #X restore 203 371 pd folder-hierarchy;
 #X msg 202 446 \; pd-folder-hierarchy vis \$1;

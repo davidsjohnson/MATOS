@@ -9,7 +9,7 @@
 
 #include "PdPatch.h"
 #include "Interpreter.h"
-#include "Beliefs.h"
+#include "Belief.h"
 #include "OscMonitor.h"
 
 class Agent {
@@ -31,9 +31,9 @@ private:
     OscMonitor      oscMonitor;
 
     // BDI objects
-    Interpreter     bdi;
-    Beliefs         beliefs;
-    vector<Goal>    goals;
+    Interpreter                     bdi;
+    vector<Goal>                    goals;
+    map<string, shared_ptr<Belief>> beliefs;
 
     friend ostream& operator<<(ostream& os, const Agent& agent);
 };

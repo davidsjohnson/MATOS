@@ -5,7 +5,7 @@
 #include "Goal.h"
 
 bool is_operator(string token){
-    return token == "<" || token == ">" || token == "==" || token == ">=" || token == "<=" || token == "+" || token == "*" || token == "/" || token == "-";
+    return token == "<" || token == ">" || token == "==" || token == ">=" || token == "<=" || token == "and" || token == "or" || token == "+" || token == "*" || token == "/" || token == "-";
 }
 
 int precedence(string token){
@@ -13,6 +13,7 @@ int precedence(string token){
     if (token == "*" || token == "/") return 3;
     if (token == "+" || token == "-") return 2;
     if (token == "<" || token == ">" || token == "==" || token == ">=" || token == "<=" ) return 1;
+    if (token == "and" || token == "or") return 0;
     else throw exception();
 }
 
@@ -28,21 +29,23 @@ int evaluateArith(int operand1, int operand2, string op){
 
 bool evaluateCondition(int operand1, int operand2, string op){
 
-    if (op == "<") return operand2 < operand1;
-    if (op == "<=") return operand2 <= operand1;
-    if (op == "==") return operand2 == operand1;
-    if (op == ">=") return operand2 >= operand1;
-    if (op == ">") return operand2 > operand1;
+    if (op == "<")      return operand2 < operand1;
+    if (op == "<=")     return operand2 <= operand1;
+    if (op == "==")     return operand2 == operand1;
+    if (op == ">=")     return operand2 >= operand1;
+    if (op == ">")      return operand2 > operand1;
+    if (op == "and")    return operand2 && operand1;
+    if (op == "or")     return operand2 || operand1;
 
     return true;
 }
 
 
-Goal::Goal(function<void(bool result, const Goal& g)> callback) :
+Goal::Goal(ResultCallback callback) :
     callback(callback), outputQueue()
 {}
 
-Goal::Goal(vector<string> infixExpression, function<void(bool result, const Goal& g)> callback) :
+Goal::Goal(vector<string> infixExpression, ResultCallback callback) :
     callback(callback), outputQueue()
 {
     setExpression(infixExpression);
@@ -104,18 +107,34 @@ bool Goal::evaluate(map<string, int> params){
             int o1;
             int o2;
 
+
+
             try {
                 o1 = params.at(operand1);
             }
             catch(exception e){
-                o1 = stoi(operand1);
+                try {
+                    o1 = stoi(operand1);
+                }
+                catch(exception e){
+                    if(operand1 == "true")          o1 = true;
+                    else if(operand1 == "false")    o1 = false;
+                    else throw exception();  //TODO:: Missing Parameter Exception
+                }
             }
 
             try {
                 o2 = params.at(operand2);
             }
             catch(exception e){
-                o2 = stoi(operand2);
+                try {
+                    o2 = stoi(operand2);
+                }
+                catch(exception e){
+                    if(operand2 == "true")          o2 = true;
+                    else if(operand2 == "false")    o2 = false;
+                    else throw exception();  //TODO:: Missing Parameter Exception
+                }
             }
 
 
@@ -125,16 +144,23 @@ bool Goal::evaluate(map<string, int> params){
             }
             else{
                 bool result = evaluateCondition(o1, o2, op);
-                return result;
+                evalStack.push(result ? "true" : "false");
             }
         }
-
     }
-    return false;
+
+    if (evalStack.size() > 1)
+        throw exception();
+
+    string result = evalStack.top();
+
+    if(result == "true")    return true;
+    else                    return false;
+
 }
 
-void Goal::runFunction(map<string,int> params) {
-    callback(evaluate(params), *this);
+void Goal::action(map<string,int> params) {
+    callback(evaluate(params), *this, params);
 }
 
 

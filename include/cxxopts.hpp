@@ -989,7 +989,7 @@ void
 Options::parse_option
 (
   std::shared_ptr<OptionDetails> value,
-  const std::string& /*name*/,
+  const std::string& /*paramName*/,
   const std::string& arg
 )
 {

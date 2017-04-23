@@ -7,27 +7,26 @@
 
 #include "common.h"
 
-//class Goal;
-//
-//typedef function<void(bool result, const Goal& g)> ResultCallback;
+class Goal;
+typedef function<void(bool result, const Goal& g, const map<string, int>& params)> ResultCallback;
 
 class Goal {
 
 public:
-    Goal(function<void(bool result, const Goal& g)> callback);
-    Goal(vector<string> infixExpression, function<void(bool result, const Goal& g)> callback);
+    Goal(ResultCallback callback);
+    Goal(vector<string> infixExpression, ResultCallback callback);
 
-    string name;
+    void    setExpression(vector<string> infixExpression);
+    bool    evaluate(map<string, int> params);
+    void    action(map<string, int> params);
 
-    void setExpression(vector<string> infixExpression);
-    bool evaluate(map<string, int> params);
-    void runFunction(map<string, int> params);
+    string  name;
 
 
 private:
 
     vector<string>  outputQueue;
-    function<void(bool result, const Goal& g)>  callback;
+    ResultCallback  callback;
 
     friend ostream& operator<<(ostream& os, const Goal& goal);
 };
