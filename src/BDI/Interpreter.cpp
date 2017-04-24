@@ -4,8 +4,7 @@
 
 #include "Interpreter.h"
 
-#include  <random>
-#include  <iterator>
+#include <random>
 
 
 template<typename Iter, typename RandomGenerator>
@@ -22,34 +21,30 @@ Iter select_randomly(Iter start, Iter end) {
     return select_randomly(start, end, gen);
 }
 
-Interpreter::Interpreter(map<string, shared_ptr<Belief>> beliefs, vector<Goal> goals) :
+Interpreter::Interpreter(map<string, shared_ptr<Belief>>& beliefs, vector<Goal> goals) :
     m_beliefs(beliefs), m_goals(goals)
 {
+    m_blfParams["myTempo"] = 70;
 }
 
 void Interpreter::update() {
 
     // Interpreter Steps Here...
+
     // Process Beliefs - Creates Params List
-    // Check Goals against Params List
-    // Select Actions from Goals
-    // Perform Actions
-
+    float blfTempoSum = 0;
+    int   tempoCnt = 0;
     for (auto beliefPair : m_beliefs){
-        cout << "Belief - " << beliefPair.first << ":  " << *beliefPair.second <<endl;
+        Belief b = *beliefPair.second;
+        if (b.paramName == "tempo"){
+            blfTempoSum+=b.value;
+            tempoCnt++;
+        }
     }
+    m_blfParams["blfTempo"] = (int) blfTempoSum/tempoCnt;
 
-    cout << endl;
-
-    for (auto goal : m_goals){
-        cout << "Goal - " << goal.name << ": " << goal << endl;
-    }
-
+    // Check Goals against Params List
     vector<Goal> options;
-
-    m_blfParams["myTempo"] = 45;
-    m_blfParams["blfTempo"] = 75;
-
     for (Goal g : m_goals){
         if ( !g.evaluate(m_blfParams) ){
             options.push_back(g);
@@ -59,6 +54,7 @@ void Interpreter::update() {
         }
     }
 
+    // Select Actions from Goals and perform Action
     if(options.size() > 0) {
         Goal g = *(select_randomly(options.begin(), options.end()));
         g.action(m_blfParams);
@@ -66,5 +62,16 @@ void Interpreter::update() {
 }
 
 void Interpreter::start(){
-    update();
+
+    thread bdi(&Interpreter::run, this);
+    bdi.join();
+}
+
+void Interpreter::run(){
+
+    while (true){
+        update();
+        this_thread::sleep_for(chrono::milliseconds(40));
+    }
+
 }

@@ -8,7 +8,7 @@
 #include "common.h"
 
 class Goal;
-typedef function<void(bool result, const Goal& g, const map<string, int>& params)> ResultCallback;
+typedef function<void(bool result, const Goal& g, map<string, int>& params)> ResultCallback;
 
 class Goal {
 
@@ -18,7 +18,7 @@ public:
 
     void    setExpression(vector<string> infixExpression);
     bool    evaluate(map<string, int> params);
-    void    action(map<string, int> params);
+    void    action(map<string, int>& params);
 
     string  name;
 

@@ -13,10 +13,11 @@ class Interpreter {
 
 public:
     Interpreter() : m_beliefs(), m_goals() {}
-    Interpreter(map<string, shared_ptr<Belief>> beliefs, vector<Goal> goals);
+    Interpreter(map<string, shared_ptr<Belief>>& beliefs, vector<Goal> goals);
 
     void update();
     void start();
+    void run();
 
 private:
     map<string, shared_ptr<Belief>> m_beliefs;

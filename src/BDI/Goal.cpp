@@ -159,7 +159,7 @@ bool Goal::evaluate(map<string, int> params){
 
 }
 
-void Goal::action(map<string,int> params) {
+void Goal::action(map<string,int>& params) {
     callback(evaluate(params), *this, params);
 }
 

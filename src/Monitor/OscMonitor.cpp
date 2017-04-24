@@ -15,6 +15,5 @@ void OscMonitor::start() {
 
 
 void OscMonitor::addFunction(string name, callbackFunction func) {
-
     oscIn.onReceive(name, func);
 }

@@ -11,12 +11,13 @@
 #include "Interpreter.h"
 #include "Belief.h"
 #include "OscMonitor.h"
+#include "OscSender.h"
 
 class Agent {
 
 public:
 
-    Agent(int agentID, map<int, string> neighbors, const string& pdFile, const int& oscPort);
+    Agent(int agentID,  map<int, pair<string, int>> neighbors, const string& pdFile, const int& oscPort);
 
     void    start();
     int     getAgentID(){return id;}
@@ -25,10 +26,11 @@ private:
     int                 id;
     int                 oscPort;
     string              patchFile;
-    map<int, string>    neighbors;
+    map<int, pair<string, int>> neighbors;
 
-    PdPatch         patch;
-    OscMonitor      oscMonitor;
+    PdPatch                 patch;
+    OscMonitor              oscMonitor;
+    vector<shared_ptr<OscSender>>       oscOuts;
 
     // BDI objects
     Interpreter                     bdi;

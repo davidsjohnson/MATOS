@@ -12,6 +12,7 @@
 #include <functional>
 #include <stack>
 #include <queue>
+#include <thread>
 
 #include "oscpack/osc/OscReceivedElements.h"
 

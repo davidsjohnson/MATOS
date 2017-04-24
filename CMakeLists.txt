@@ -15,6 +15,6 @@ set(SOURCE_FILES src/main.cpp src/PdAudio/PdObject.cpp include/PdObject.h /
         include/Belief.h src/BDI/Goal.cpp include/Goal.h src/BDI/ActionGenerator.cpp /
         include/ActionGenerator.h src/Input/OscListener.cpp include/OscListener.h /
         include/Monitor.h include/common.h src/Monitor/OscMonitor.cpp include/OscMonitor.h /
-        include/cxxopts.hpp src/BDI/Action.cpp include/Action.h)
+        include/cxxopts.hpp src/BDI/Action.cpp include/Action.h include/OscSender.h)
 add_executable(MATO ${SOURCE_FILES})
 target_link_libraries(MATO pd pdcpp rtaudio oscpack)

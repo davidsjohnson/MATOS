@@ -1,6 +1,8 @@
 #include "Agent.h"
 #include "cxxopts.hpp"
 
+#include <fstream>
+
 using namespace std;
 
 
@@ -28,8 +30,44 @@ int main(int argc, char* argv[]) {
     string pdFile = options["p"].as<string>();
     string nbFile = options["n"].as<string>();
 
-    // TODO:  Implement loading neighbors file
-    map<int, string> neighbors;
+    // Loading neighbors file
+    map<int, pair<string, int>> neighbors;
+    if (nbFile.empty()) {
+        cout << "No Neighbors Found" << endl;
+    }
+    else{
+        ifstream inFile(nbFile.c_str());
+        if(! inFile){
+            cerr << "Unable to open file: " << nbFile << " - exiting." << endl;
+            exit(1);
+        }
+
+        while(inFile){
+            string line;
+            getline(inFile, line);
+
+            istringstream iss(line);
+            try {
+                string nID;
+                string nIP;
+                string nPort;
+
+                iss >> nID;
+                iss >> nIP;
+                iss >> nPort;
+
+                neighbors[stoi(nID)] = pair<string, int>(nIP, stoi(nPort));
+            }
+            catch(exception e){
+                cout << "Error Parsing Neighbors File: " << e.what() << endl;
+            }
+
+        }
+    }
+
+    for (auto n : neighbors){
+        cout << "Neighbor ID: " << n.first << " OSC: " << n.second.first << " " << n.second.second << endl;
+    }
 
     // Starting Agent with Parameters from Command Line
     Agent agent(agentID, neighbors, pdFile, oscPort);
