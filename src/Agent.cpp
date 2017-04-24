@@ -19,7 +19,7 @@ Agent::Agent(int agentID,  map<int, pair<string, int>> neighbors, const string& 
     }
 
     // #############
-    // Adding Callback Function for Receiving Tempo Input Messages
+    // Adding Callback Function for Receiving Tempo AgentComm Messages
     // #############
     callbackFunction tempoFunc = [&](const osc::ReceivedMessage& message) {
 
@@ -47,7 +47,7 @@ Agent::Agent(int agentID,  map<int, pair<string, int>> neighbors, const string& 
     oscMonitor.addFunction("/tempo/.*", tempoFunc);
 
     // #############
-    // Adding Callback Function for Receiving State Input Messages
+    // Adding Callback Function for Receiving State AgentComm Messages
     // #############
     callbackFunction stateFunc = [&](const osc::ReceivedMessage& message) {
 
@@ -76,7 +76,7 @@ Agent::Agent(int agentID,  map<int, pair<string, int>> neighbors, const string& 
 
 
     // #############
-    // Adding Callback for a Tempo Goal
+    // Adding Action for a Tempo Goal  TODO: Change all instances to "Action"
     // #############
     function<void(bool result, const Goal& g, map<string, float>& params)> tempoCallback;
     tempoCallback = [this](bool result, const Goal& g, map<string, float>& p){

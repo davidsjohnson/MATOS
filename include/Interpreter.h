@@ -7,7 +7,6 @@
 
 #include "Belief.h"
 #include "Goal.h"
-#include "ActionGenerator.h"
 
 
 class Interpreter {
