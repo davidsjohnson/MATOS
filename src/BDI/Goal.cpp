@@ -79,7 +79,7 @@ void Goal::setExpression(vector<string> infixExpression) {
 }
 
 
-bool Goal::evaluate(map<string, int> params){
+bool Goal::evaluate(map<string, float> params){
 
     if (outputQueue.empty())
         throw exception();
@@ -159,7 +159,7 @@ bool Goal::evaluate(map<string, int> params){
 
 }
 
-void Goal::action(map<string,int>& params) {
+void Goal::action(map<string,float>& params) {
     callback(evaluate(params), *this, params);
 }
 

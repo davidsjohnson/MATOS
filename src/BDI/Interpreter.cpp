@@ -6,6 +6,8 @@
 
 #include <random>
 
+extern int g_agentID;
+
 // #############
 // Functions for Selecting Random element from iterator
 // #############
@@ -27,11 +29,9 @@ Iter select_randomly(Iter start, Iter end) {
 
 
 
-Interpreter::Interpreter(map<string, shared_ptr<Belief>>& beliefs, vector<Goal>& goals) :
+Interpreter::Interpreter(Beliefs beliefs, Goals goals) :
     m_beliefs(beliefs), m_goals(goals)
 {
-    m_blfParams["myTempo"] = 45;
-    m_blfParams["blfTempo"] = 70;
 }
 
 void Interpreter::update() {
@@ -41,24 +41,60 @@ void Interpreter::update() {
     // Process Beliefs - Creates Params List
     float blfTempoSum = 0;
     int   tempoCnt = 0;
-    for (auto beliefPair : m_beliefs){
+
+    vector<float> tempos;
+    vector<float> states;
+
+    for (auto beliefPair : *m_beliefs){
         Belief b = *beliefPair.second;
         if (b.paramName == "tempo"){
-            blfTempoSum+=b.value;
-            tempoCnt++;
+            if (beliefPair.first == "/tempo/"+to_string(g_agentID)){
+                m_blfParams["myTempo"] = b.value;
+            }
+            else {
+                tempos.push_back(b.value);
+            }
+        }
+        else if (b.paramName == "state"){
+            if (beliefPair.first == "/state/"+to_string(g_agentID)){
+                m_blfParams["myState"] = b.value;
+            }
+            else{
+                states.push_back(b.value);
+            }
+        }
+        else if (b.paramName == "stateChgTime"){
+            if (beliefPair.first == "/stateChgTime/"+to_string(g_agentID)){
+                m_blfParams["stateChgTime"] = b.value;
+            }
         }
     }
 
-    if (tempoCnt > 0) {
-        m_blfParams["blfTempo"] = (int) blfTempoSum/tempoCnt;
+    m_blfParams["currentTime"] = time(NULL) % 2592000; // moding to reduce size of value to fit in float
+
+    // Process Tempos to find param value
+    if (tempos.size() > 0) {
+        // TODO:  Find better method for tempo estimation
+        float avg = accumulate(tempos.begin(), tempos.end(), 0) / tempos.size();
+        m_blfParams["blfTempo"] = avg;
     }
     else{
         m_blfParams["blfTempo"] = m_blfParams["myTempo"];
     }
 
+    // Process States to find param values
+    if (states.size() > 0) {
+        auto maxState = max_element(states.begin(), states.end());
+        m_blfParams["blfState"] = *maxState;
+    }
+    else{
+        float state = m_blfParams["myState"];
+        m_blfParams["blfState"] = state;
+    }
+
     // Check Goals against Params List
     vector<Goal> options;
-    for (Goal g : m_goals){
+    for (Goal g : *m_goals){
         if ( !g.evaluate(m_blfParams) ){
             options.push_back(g);
         }
@@ -79,18 +115,17 @@ void Interpreter::start(){
 
     // TODO: Implement locking mechanisms for beliefs and goals databases
     bdi = thread(&Interpreter::run, this);
-//    bdi.join();
 }
 
 Interpreter::~Interpreter() {
     if (bdi.joinable()) bdi.join();
 }
 
-void Interpreter::setBeliefs(const map<string, shared_ptr<Belief>> &beliefs) {
+void Interpreter::setBeliefs(Beliefs beliefs) {
     m_beliefs = beliefs;
 }
 
-void Interpreter::setGoals(const vector<Goal, allocator<Goal>> &goals) {
+void Interpreter::setGoals(Goals goals) {
     m_goals = goals;
 }
 
@@ -98,7 +133,7 @@ void Interpreter::run(){
 
     while (true){
         update();
-        this_thread::sleep_for(chrono::milliseconds(40));
+        this_thread::sleep_for(chrono::milliseconds(33));
     }
 
 }

@@ -10,6 +10,7 @@
 #include "PdPatch.h"
 #include "Interpreter.h"
 #include "Belief.h"
+#include "Goal.h"
 #include "OscMonitor.h"
 #include "OscSender.h"
 
@@ -22,6 +23,9 @@ public:
     void    start();
     int     getAgentID(){return id;}
 
+    void    updateState(string paramName, float value);
+    void    updateNeighbors(string paramName, float value);
+
 private:
     int                 id;
     int                 oscPort;
@@ -33,9 +37,9 @@ private:
     vector<shared_ptr<OscSender>>       oscOuts;
 
     // BDI objects
-    Interpreter                     bdi;
-    vector<Goal>                    goals;
-    map<string, shared_ptr<Belief>> beliefs;
+    Interpreter bdi;
+    Goals       goals;
+    Beliefs     beliefs;
 
     friend ostream& operator<<(ostream& os, const Agent& agent);
 };

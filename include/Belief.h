@@ -7,6 +7,9 @@
 
 #include "common.h"
 
+class Belief;
+typedef shared_ptr<map<string, shared_ptr<Belief>>> Beliefs;
+
 class Belief{
 
 public:

@@ -5,12 +5,18 @@
 #ifndef MATO_PDOBJECT_H
 #define MATO_PDOBJECT_H
 
+#include "common.h"
+
 #include "PdBase.hpp"
+
+class Agent;
 
 // custom receiver class
 class PdObject : public pd::PdReceiver, public pd::PdMidiReceiver {
 
 public:
+
+    void setAgent(Agent* agent);
 
     // pd message receiver callbacks
     void print(const std::string& message);
@@ -30,6 +36,9 @@ public:
     void receivePolyAftertouch(const int channel, const int pitch, const int value);
 
     void receiveMidiByte(const int port, const int byte);
+
+private:
+    Agent* m_agent;
 };
 
 

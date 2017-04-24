@@ -8,7 +8,8 @@
 #include "common.h"
 
 class Goal;
-typedef function<void(bool result, const Goal& g, map<string, int>& params)> ResultCallback;
+typedef shared_ptr<vector<Goal, allocator<Goal>>> Goals;
+typedef function<void(bool result, const Goal& g, map<string, float>& params)> ResultCallback;
 
 class Goal {
 
@@ -17,8 +18,8 @@ public:
     Goal(vector<string> infixExpression, ResultCallback callback);
 
     void    setExpression(vector<string> infixExpression);
-    bool    evaluate(map<string, int> params);
-    void    action(map<string, int>& params);
+    bool    evaluate(map<string, float> params);
+    void    action(map<string, float>& params);
 
     string  name;
 

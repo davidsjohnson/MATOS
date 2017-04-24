@@ -22,10 +22,9 @@ void errorCallback(RtAudioError::Type type, const string& errorText){
 PdPatch::PdPatch(const string& filename) :
     audio(make_shared<RtAudio>()),
     srate(44100),
-    n_bufferFrames(128)
-
+    n_bufferFrames(128),
+    pdFile(filename)
 {
-    init(filename);
 }
 
 PdPatch::~PdPatch() {
@@ -33,7 +32,7 @@ PdPatch::~PdPatch() {
 }
 
 
-void PdPatch::init(const string &filename) {
+void PdPatch::init(Agent* agent) {
 
     if(!pd.init(0, 2, srate)) {
         cerr << "Could not initialize PD" << endl;
@@ -44,8 +43,11 @@ void PdPatch::init(const string &filename) {
     pd.addToSearchPath("../in_c/patch_editor_abs");
 
     pd.setReceiver(&pdO);
+    pdO.setAgent(agent);
+    pd.subscribe("tempo");
+    pd.subscribe("state");
 
-    patch = pd.openPatch(filename, "..");
+    patch = pd.openPatch(pdFile, "..");
     if (!patch.isValid())
     {
         cerr << "Error loading patch" << endl;
@@ -78,8 +80,8 @@ void PdPatch::init(const string &filename) {
     }
 
     sendNextState();
-    sendParameters("1005-maestro4-ch1-r", {100.0f});
-    sendParameters("1005-maestro4-master-r", {100.0f});
+    sendParameters("1005-maestro4-ch1-r", {40.0f});
+    sendParameters("1005-maestro4-master-r", {40.0f});
 }
 
 

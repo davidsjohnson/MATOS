@@ -9,11 +9,14 @@ include_directories(/usr/local/include/libpd)
 include_directories(/usr/local/include/rtaudio)
 link_directories(/usr/local/lib)
 
-set(SOURCE_FILES src/main.cpp src/PdAudio/PdObject.cpp include/PdObject.h /
-        src/BDI/Interpreter.cpp include/Interpreter.h src/PdAudio/PdPatch.cpp /
-        include/PdPatch.h src/Agent.cpp include/Agent.h src/BDI/Belief.cpp /
-        include/Belief.h src/BDI/Goal.cpp include/Goal.h src/BDI/ActionGenerator.cpp /
-        include/ActionGenerator.h src/Input/OscListener.cpp include/OscListener.h /
+set(SOURCE_FILES src/main.cpp include/Agent.h src/Agent.cpp /
+        include/PdPatch.h src/PdAudio/PdPatch.cpp /
+        src/PdAudio/PdObject.cpp include/PdObject.h /
+        src/BDI/Interpreter.cpp include/Interpreter.h /
+        src/BDI/Belief.cpp include/Belief.h /
+        src/BDI/Goal.cpp include/Goal.h
+        src/BDI/ActionGenerator.cpp include/ActionGenerator.h /
+        src/Input/OscListener.cpp include/OscListener.h /
         include/Monitor.h include/common.h src/Monitor/OscMonitor.cpp include/OscMonitor.h /
         include/cxxopts.hpp src/BDI/Action.cpp include/Action.h include/OscSender.h)
 add_executable(MATO ${SOURCE_FILES})

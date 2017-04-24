@@ -5,19 +5,16 @@
 #ifndef MATO_PDPATCH_H
 #define MATO_PDPATCH_H
 
-#include <string>
-#include <iostream>
-#include <initializer_list>
+#include "common.h"
 
 #include "RtAudio.h"
 
 #include "PdBase.hpp"
 #include "PdObject.h"
 
-using namespace std;
 using namespace pd;
 
-//typedef function<int(void*, void*, unsigned int, double, RtAudioStreamStatus, void*)> AudioCallback;
+class Agent;
 
 class PdPatch {
 
@@ -31,17 +28,18 @@ public:
     void        sendTempo(float tempo);
     void        sendParameters(const string& receiver, initializer_list<float> args);
 
+    void        init(Agent* agent);
+
 private:
 
     PdBase      pd;
     PdObject    pdO;
     Patch       patch;
     shared_ptr<RtAudio>     audio;
+    string      pdFile;
 
     unsigned int    srate;
     unsigned int    n_bufferFrames;
-
-    void        init(const string& filename);
 
     friend int audioCallback(void *outputBuffer, void *inputBuffer, unsigned int nBufferFrames, double streamTime, RtAudioStreamStatus status, void* userData);
 };

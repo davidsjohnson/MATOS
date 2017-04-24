@@ -9,11 +9,12 @@
 #include "Goal.h"
 #include "ActionGenerator.h"
 
+
 class Interpreter {
 
 public:
     Interpreter() : m_beliefs(), m_goals() {}
-    Interpreter(map<string, shared_ptr<Belief>>& beliefs, vector<Goal>& goals);
+    Interpreter(Beliefs beliefs, Goals goals);
 
     ~Interpreter();
 
@@ -22,16 +23,15 @@ public:
     void start();
     void run();
 
-    void setBeliefs(const map<string, shared_ptr<Belief>> &m_beliefs);
-
-    void setGoals(const vector<Goal, allocator<Goal>> &m_goals);
+    void setBeliefs(Beliefs m_beliefs);
+    void setGoals(Goals m_goals);
 
 private:
-    map<string, shared_ptr<Belief>> m_beliefs;
-    vector<Goal>                    m_goals;
-    map<string, int>                m_blfParams;
+    Beliefs             m_beliefs;
+    Goals               m_goals;
+    map<string, float>    m_blfParams;
 
-    thread                          bdi;
+    thread              bdi;
 
 };
 

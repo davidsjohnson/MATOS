@@ -1,10 +1,12 @@
 #include "Agent.h"
 #include "cxxopts.hpp"
+#include "common.h"
 
 #include <fstream>
 
 using namespace std;
 
+int g_agentID;   // TODO:  Find better options for this
 
 int main(int argc, char* argv[]) {
 
@@ -70,6 +72,7 @@ int main(int argc, char* argv[]) {
     }
 
     // Starting Agent with Parameters from Command Line
+    g_agentID = agentID;
     Agent agent(agentID, neighbors, pdFile, oscPort);
     cout << "Started Agent:\n";
     cout << agent << endl;

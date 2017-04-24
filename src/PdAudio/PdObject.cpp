@@ -2,11 +2,13 @@
 // Created by David Johnson on 4/17/17.
 //
 #include "PdObject.h"
+#include "Agent.h"
 
-#include <iostream>
-
-using namespace std;
 using namespace pd;
+
+void PdObject::setAgent(Agent* agent) {
+    m_agent = agent;
+}
 
 //--------------------------------------------------------------
 void PdObject::print(const std::string& message) {
@@ -20,6 +22,14 @@ void PdObject::receiveBang(const std::string& dest) {
 
 void PdObject::receiveFloat(const std::string& dest, float num) {
     cout << "CPP: float " << dest << ": " << num << endl;
+
+    // TODO:  Fix Circular reference issues...
+    m_agent->updateState(dest, num);
+
+    if (dest == "state"){
+        int t = time(NULL) % 2592000;               // moding to reduce size of value to fit in float
+        m_agent->updateState("stateChgTime", t);
+    }
 }
 
 void PdObject::receiveSymbol(const std::string& dest, const std::string& symbol) {
