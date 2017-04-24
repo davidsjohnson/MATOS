@@ -11,13 +11,17 @@ Agent::Agent(int agentID,  map<int, pair<string, int>> neighbors, const string& 
         oscMonitor(oscPort), beliefs(), bdi()
 {
 
+    // #############
     // Setup OscOuts for all neighbors
+    // #############
     for (pair<int, pair<string, int>> n : neighbors){
         shared_ptr<OscSender> o = make_shared<OscSender>(n.second.second, n.second.first);
         oscOuts.push_back(o);
     }
 
+    // #############
     // Adding Callback Function for Receiving Tempo Input Messages
+    // #############
     callbackFunction tempoFunc = [&](const osc::ReceivedMessage& message) {
 
         osc::ReceivedMessageArgumentIterator arg = message.ArgumentsBegin();
@@ -35,19 +39,21 @@ Agent::Agent(int agentID,  map<int, pair<string, int>> neighbors, const string& 
 
         // Add (or update) a belief for Tempo message from a neighbor
         beliefs[message.AddressPattern()] = make_shared<Belief>("tempo", tempo);
+
+        cout << "Current Beliefs:" << endl;
+        for (auto p : beliefs) {
+            cout << "Belief: " << p.first << " : " << p.second << endl;
+        }
     };
-
-
     oscMonitor.addFunction("/tempo/.*", tempoFunc);
 
-    // Example Callback for Goal
+    // #############
+    // Adding Callback for a Tempo Goal
+    // #############
     function<void(bool result, const Goal& g, map<string, int>& params)> tempoCallback;
     tempoCallback = [this](bool result, const Goal& g, map<string, int>& p){
 
-            if (result){
-//                cout << "Goal Meet" << endl;
-            }
-            else{
+            if (!result){
                 cout << "Tempo Goal Not Meet: " << g << endl;
                 int tempo = p.at("blfTempo");
                 patch.sendTempo((float) tempo);
@@ -60,7 +66,7 @@ Agent::Agent(int agentID,  map<int, pair<string, int>> neighbors, const string& 
             }
         };
 
-    // Setup Some Goals
+    // Adding a Goal for Tempo and assigning the tempo callback
     goals.push_back( Goal({"myTempo", "==", "blfTempo",           "or",
                            "myTempo", "==", "blfTempo", "*", "2", "or",
                            "myTempo", "==", "blfTempo", "*", "3", "or",
@@ -70,12 +76,19 @@ Agent::Agent(int agentID,  map<int, pair<string, int>> neighbors, const string& 
                            "myTempo", "==", "blfTempo", "/", "4"
                           }, tempoCallback) );
 
-    string idStr = "/tempo/" + to_string(id);
-    beliefs["/tempo/1"] = make_shared<Belief>("tempo", 45);
-    beliefs[idStr] = make_shared<Belief>("tempo", 70);
+    // #############
+    // Initialize Interpreter with belief and goal databases
+    // #############
+    bdi.setBeliefs(beliefs);
+    bdi.setGoals(goals);
 
-    bdi = Interpreter(beliefs, goals);
+    // #############
+    // Adding Beliefs for testing only todo: remove after testing
+    // #############
+    Belief b("tempo", 45);
+    beliefs["/tempo/0"] = make_shared<Belief>("tempo", 45);
 }
+
 
 void Agent::start() {
     patch.sendStart();

@@ -18,7 +18,7 @@ public:
 OscSender(int port=7000, string  ipAddress="127.0.0.1") :
         m_transmitSocket( IpEndpointName(ipAddress.c_str(), port) )
 {
-   cout << "OSC Sending to:" << ipAddress << " port: " << port << endl;
+   cout << "OSC Sender to: " << ipAddress << " port: " << port << endl;
 }
 
     template<typename T, typename... Ts>
