@@ -17,6 +17,7 @@ class OscListener: public osc::OscPacketListener {
 public:
 
     OscListener(int port);
+    ~OscListener();
     void onReceive(string addressPattern, callbackFunction callback);
     void start();
 
@@ -25,7 +26,11 @@ private:
     int                           m_port;
     map<string, callbackFunction> messages;
 
-    virtual void ProcessMessage(const osc::ReceivedMessage& m, const IpEndpointName& endpoint);
+    thread t;
+
+    virtual void    ProcessMessage(const osc::ReceivedMessage& m, const IpEndpointName& endpoint);
+    void            run();
+
 
 };
 

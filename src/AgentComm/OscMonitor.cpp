@@ -4,8 +4,8 @@
 
 #include "OscMonitor.h"
 
-OscMonitor::OscMonitor(int oscPort) :
-        Monitor(), oscIn(oscPort)
+OscMonitor::OscMonitor(int oscPort) : Monitor(),
+        oscIn(oscPort)
 {}
 
 

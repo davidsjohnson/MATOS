@@ -43,10 +43,17 @@ OscListener::OscListener(int port) :
     onReceive(".*", func); // Apply to All messages
 }
 
-void OscListener::start(){
+OscListener::~OscListener() {
+    if (t.joinable()) t.join();
+}
 
+void OscListener::start(){
+    t = thread(&OscListener::run, this);
+}
+
+void OscListener::run() {
     UdpListeningReceiveSocket socket( IpEndpointName(IpEndpointName::ANY_ADDRESS, m_port), this );
-    socket.RunUntilSigInt();
+    socket.Run();
 }
 
 void OscListener::onReceive(string addressPattern, callbackFunction callback) {

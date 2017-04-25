@@ -44,8 +44,11 @@ void PdPatch::init(Agent* agent) {
 
     pd.setReceiver(&pdO);
     pdO.setAgent(agent);
+
+    // TODO: Turn into public api method
     pd.subscribe("tempo");
     pd.subscribe("state");
+    pd.subscribe("volume");
 
     patch = pd.openPatch(pdFile, "..");
     if (!patch.isValid())
@@ -80,8 +83,8 @@ void PdPatch::init(Agent* agent) {
     }
 
     sendNextState();
-    sendParameters("1005-maestro4-ch1-r", {40.0f});
-    sendParameters("1005-maestro4-master-r", {40.0f});
+    sendParameters("set_volume", {40.0f});
+    sendParameters("set_volume", {40.0f});
 }
 
 
@@ -101,11 +104,13 @@ void PdPatch::sendTempo(float tempo){
 
 
 void PdPatch::sendParameters(const string &receiver, initializer_list<float> args) {
+    stringstream ss;
+    ss << patch.dollarZeroStr() << "-" << receiver;
     pd.startMessage();
     for (float f : args){
         pd.addFloat(f);
     }
-    pd.finishList(receiver);
+    pd.finishList(ss.str());
 }
 
 

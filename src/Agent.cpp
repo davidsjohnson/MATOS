@@ -7,7 +7,7 @@
 Agent::Agent(int agentID,  map<int, pair<string, int>> neighbors, const string& pdFile, const int& oscPort) :
         id(agentID), oscPort(oscPort), patchFile(pdFile),
         neighbors(neighbors), patch(pdFile), goals(make_shared<vector<Goal, allocator<Goal>>>()),
-        oscMonitor(oscPort), beliefs(make_shared<map<string, shared_ptr<Belief>>>()), bdi()
+        oscMonitor(oscPort), proximityMonitor(oscPort+1000), beliefs(make_shared<map<string, shared_ptr<Belief>>>()), bdi()
 {
 
     // #############
@@ -76,6 +76,109 @@ Agent::Agent(int agentID,  map<int, pair<string, int>> neighbors, const string& 
 
 
     // #############
+    // Configuring Proximity Sensor
+    // #############
+
+    // ######## Adding OSC Callback For handling proximity messages
+    callbackFunction proximityCallback = [&](const osc::ReceivedMessage& message){
+
+        osc::ReceivedMessageArgumentIterator arg = message.ArgumentsBegin();
+
+        float value;
+        if (arg->IsInt32()) {
+            value = (float) arg->AsInt32();
+        } else if (arg->IsInt64()) {
+            value = (float) arg->AsInt64();
+        } else if (arg->IsFloat()) {
+            value = arg->AsFloat();
+        } else {
+            throw osc::WrongArgumentTypeException();
+        }
+
+        // Add (or update) a belief for Tempo message from a neighbor
+        (*beliefs)[message.AddressPattern()] = make_shared<Belief>("proximity", value);
+
+        cout << "Current Beliefs:" << endl;
+        for (auto p : *beliefs) {
+            cout << "Belief: " << p.first << " : " << (*p.second) << endl;
+        }
+
+    };
+    proximityMonitor.addFunction("/proximity/.*", proximityCallback);
+    proximityMonitor.start();
+
+    // ######## Action Function for proximity
+    function<void(bool result, const Goal& g, map<string, float>& params)> proximityAction;
+    proximityAction = [this](bool result, const Goal& g, map<string, float>& params){
+        if (result){
+            cout << "Proximity Goal Met: " << g << endl;
+            float volume = params.at("proximity");
+            patch.sendParameters("set_volume", {volume});
+            updateState("myProximity", volume);
+        }
+    };
+
+    // ######## Adding Proximity Goal and Action
+    goals->push_back( Goal({"proximity", ">", "1", "and",
+                            "proximity", "<", "127", "and",
+                            "proximity", "!=", "myProximity"
+                           }, proximityAction) );
+
+    updateState("myProximity", 0);  // initialize state
+    // Proximity Sensor Configured
+    // #############
+
+
+    // #############
+    // Configuring Volume Rules
+    // #############
+
+    callbackFunction volumeCallback = [&](const osc::ReceivedMessage& message){
+
+        osc::ReceivedMessageArgumentIterator arg = message.ArgumentsBegin();
+
+        float tempo;
+        if (arg->IsInt32()) {
+            tempo = (float) arg->AsInt32();
+        } else if (arg->IsInt64()) {
+            tempo = (float) arg->AsInt64();
+        } else if (arg->IsFloat()) {
+            tempo = arg->AsFloat();
+        } else {
+            throw osc::WrongArgumentTypeException();
+        }
+
+        // Add (or update) a belief for Tempo message from a neighbor
+        (*beliefs)[message.AddressPattern()] = make_shared<Belief>("volume", tempo);
+
+        cout << "Current Beliefs:" << endl;
+        for (auto p : *beliefs) {
+            cout << "Belief: " << p.first << " : " << (*p.second) << endl;
+        }
+
+    };
+    oscMonitor.addFunction("/volume/.*", volumeCallback);
+
+    function<void(bool result, const Goal& g, map<string, float>& params)> volumeAction;
+    volumeAction = [this](bool result, const Goal& g, map<string, float>& p){
+
+        if (!result){
+            cout << "Volume Goal Not Met: " << g << endl;
+            float volume = p.at("worldVolume");
+            patch.sendParameters("set_volume", {volume});
+        }
+    };
+
+
+    // Adding a Goal for Tempo and assigning the tempo callback
+    goals->push_back( Goal({ "myVolume", "-", "5", "<=", "worldVolume", "and",
+                             "myVolume", "+", "5", ">=", "worldVolume"
+                           }, volumeAction) );
+    // Volume Rule Configured
+    // #############
+
+
+    // #############
     // Adding Action for a Tempo Goal  TODO: Change all instances to "Action"
     // #############
     function<void(bool result, const Goal& g, map<string, float>& params)> tempoCallback;
@@ -83,8 +186,8 @@ Agent::Agent(int agentID,  map<int, pair<string, int>> neighbors, const string& 
 
             if (!result){
                 cout << "Tempo Goal Not Met: " << g << endl;
-                int tempo = p.at("blfTempo");
-                patch.sendTempo((float) tempo);
+                float tempo = p.at("blfTempo");
+                patch.sendTempo( tempo);
             }
         };
 
