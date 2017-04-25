@@ -14,6 +14,8 @@
 #include <queue>
 #include <thread>
 #include <time.h>
+#include <sstream>
+#include <fstream>
 
 #include "oscpack/osc/OscReceivedElements.h"
 

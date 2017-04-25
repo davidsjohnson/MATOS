@@ -44,6 +44,7 @@ void Interpreter::update() {
 
     vector<float> tempos;
     vector<float> states;
+    vector<float> volumes;
 
     for (auto beliefPair : *m_beliefs){
         Belief b = *beliefPair.second;
@@ -68,8 +69,21 @@ void Interpreter::update() {
                 m_blfParams["stateChgTime"] = b.value;
             }
         }
+        else if (b.paramName == "myProximity"){
+            m_blfParams["myProximity"] = b.value;
+        }
+        else if (b.paramName == "proximity"){
+            m_blfParams["proximity"] = b.value;
+        }
+        else if (b.paramName == "volume"){
+            if ( beliefPair.first == "/volume/"+to_string(g_agentID) ) {
+                m_blfParams["myVolume"] = b.value;
+            }
+            else{
+                volumes.push_back(b.value);
+            }
+        }
     }
-
     m_blfParams["currentTime"] = time(NULL) % 2592000; // moding to reduce size of value to fit in float
 
     // Process Tempos to find param value
@@ -92,14 +106,29 @@ void Interpreter::update() {
         m_blfParams["blfState"] = state;
     }
 
+    // Process Volumes to find param values
+    if (volumes.size() > 0) {
+        float avg = accumulate(volumes.begin(), volumes.end(), 0) / volumes.size();
+        m_blfParams["worldVolume"] = avg;
+    }
+    else{
+        float volume = m_blfParams["myVolume"];
+        m_blfParams["worldVolume"] = volume;
+    }
+
     // Check Goals against Params List
     vector<Goal> options;
     for (Goal g : *m_goals){
-        if ( !g.evaluate(m_blfParams) ){
-            options.push_back(g);
+        try {
+            if ( !g.evaluate(m_blfParams) ){
+                options.push_back(g);
+            }
+            else{
+                g.action(m_blfParams);
+            }
         }
-        else{
-            g.action(m_blfParams);
+        catch(MissingParameterException e){
+//            cout <<"Error: Unable to Eval Goal: " << e.what()  << endl;
         }
     }
 

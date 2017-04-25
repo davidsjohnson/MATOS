@@ -13,6 +13,7 @@
 #include "Goal.h"
 #include "OscMonitor.h"
 #include "OscSender.h"
+#include "ProximityMonitor.h"
 
 class Agent {
 
@@ -42,6 +43,7 @@ private:
     map<int, pair<string, int>>     neighbors;
     vector<shared_ptr<OscSender>>   oscOuts;
     OscMonitor                      oscMonitor;
+    ProximityMonitor                proximityMonitor;
 
     // BDI objects
     Interpreter bdi;

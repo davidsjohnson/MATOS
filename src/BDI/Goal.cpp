@@ -5,14 +5,14 @@
 #include "Goal.h"
 
 bool is_operator(string token){
-    return token == "<" || token == ">" || token == "==" || token == ">=" || token == "<=" || token == "and" || token == "or" || token == "+" || token == "*" || token == "/" || token == "-";
+    return token == "<" || token == ">" || token == "==" || token == "!=" || token == ">=" || token == "<=" || token == "and" || token == "or" || token == "+" || token == "*" || token == "/" || token == "-";
 }
 
 int precedence(string token){
 
     if (token == "*" || token == "/") return 3;
     if (token == "+" || token == "-") return 2;
-    if (token == "<" || token == ">" || token == "==" || token == ">=" || token == "<=" ) return 1;
+    if (token == "<" || token == ">" || token == "==" || token == ">=" || token == "<=" || token == "!=") return 1;
     if (token == "and" || token == "or") return 0;
     else throw exception();
 }
@@ -32,6 +32,7 @@ bool evaluateCondition(int operand1, int operand2, string op){
     if (op == "<")      return operand2 < operand1;
     if (op == "<=")     return operand2 <= operand1;
     if (op == "==")     return operand2 == operand1;
+    if (op == "!=")     return operand2 != operand1;
     if (op == ">=")     return operand2 >= operand1;
     if (op == ">")      return operand2 > operand1;
     if (op == "and")    return operand2 && operand1;
@@ -41,11 +42,11 @@ bool evaluateCondition(int operand1, int operand2, string op){
 }
 
 
-Goal::Goal(ResultCallback callback) :
+Goal::Goal(ActionFunction callback) :
     callback(callback), outputQueue()
 {}
 
-Goal::Goal(vector<string> infixExpression, ResultCallback callback) :
+Goal::Goal(vector<string> infixExpression, ActionFunction callback) :
     callback(callback), outputQueue()
 {
     setExpression(infixExpression);
@@ -119,7 +120,11 @@ bool Goal::evaluate(map<string, float> params){
                 catch(exception e){
                     if(operand1 == "true")          o1 = true;
                     else if(operand1 == "false")    o1 = false;
-                    else throw exception();  //TODO:: Missing Parameter Exception
+                    else {
+                        stringstream error;
+                        error << "Missing Parameter: " << operand1;
+                        throw MissingParameterException(error.str().c_str());  //TODO:: Handle Missing Parameter Exception
+                    }
                 }
             }
 
@@ -133,7 +138,11 @@ bool Goal::evaluate(map<string, float> params){
                 catch(exception e){
                     if(operand2 == "true")          o2 = true;
                     else if(operand2 == "false")    o2 = false;
-                    else throw exception();  //TODO:: Missing Parameter Exception
+                    else{
+                        stringstream error;
+                        error << "Missing Parameter: " << operand2;
+                        throw MissingParameterException(error.str().c_str());
+                    }
                 }
             }
 
