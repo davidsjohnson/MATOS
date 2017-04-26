@@ -43,12 +43,7 @@ void PdPatch::init(Agent* agent) {
     pd.addToSearchPath("../in_c/patch_editor_abs");
 
     pd.setReceiver(&pdO);
-    pdO.setAgent(agent);
-
-    // TODO: Turn into public api method
-    pd.subscribe("tempo");
-    pd.subscribe("state");
-    pd.subscribe("volume");
+    pdO.setAgent(agent);        // TODO: Try not to have to set agent here
 
     patch = pd.openPatch(pdFile, "..");
     if (!patch.isValid())
@@ -56,6 +51,13 @@ void PdPatch::init(Agent* agent) {
         cerr << "Error loading patch" << endl;
         exit(1);
     }
+
+    // TODO: Turn into public api method
+    pd.subscribe(patch.dollarZeroStr()+ "-tempo-toCpp");
+    pd.subscribe(patch.dollarZeroStr()+ "-state-toCpp");
+    pd.subscribe(patch.dollarZeroStr()+ "-volume-toCpp");
+    pd.subscribe(patch.dollarZeroStr()+ "-start-toCpp");
+
 
     if(audio->getDeviceCount()==0){
         cout << "Error: There are no available sound devices." << endl;
@@ -83,23 +85,27 @@ void PdPatch::init(Agent* agent) {
     }
 
     sendNextState();
-    sendParameters("set_volume", {40.0f});
-    sendParameters("set_volume", {40.0f});
+    sendParameters("-volume-fromCpp", {40.0f});
+    sendParameters("-volume-fromCpp", {40.0f});
 }
 
 
-void PdPatch::sendStart(){
-    pd.sendBang(patch.dollarZeroStr() + "-start");
+void PdPatch::sendStart(float tempo){
+    pd.sendFloat(patch.dollarZeroStr() + "-start-fromCpp", tempo);
 }
 
 
 void PdPatch::sendNextState(){
-    pd.sendBang(patch.dollarZeroStr() + "-next_state");
+    pd.sendBang(patch.dollarZeroStr() + "-state-fromCpp");
 }
 
 
 void PdPatch::sendTempo(float tempo){
-    pd.sendFloat(patch.dollarZeroStr() + "-set_tempo", tempo);
+    pd.sendFloat(patch.dollarZeroStr() + "-tempo-fromCpp", tempo);
+}
+
+void PdPatch::sendBang(const string& dest){
+    pd.sendBang(patch.dollarZeroStr() + dest);
 }
 
 

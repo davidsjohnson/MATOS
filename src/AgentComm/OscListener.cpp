@@ -13,7 +13,7 @@ OscListener::OscListener(int port) :
 
             osc::ReceivedMessageArgumentIterator arg = message.ArgumentsBegin();
 
-            cout << "OSC Received | Args: ";
+            cout << "OSC Received | Address: " << message.AddressPattern() << " | Args: ";
             for (; arg!= message.ArgumentsEnd(); arg++)
             {
                 if(arg->IsFloat()){

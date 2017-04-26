@@ -10,6 +10,13 @@ Agent::Agent(int agentID,  map<int, pair<string, int>> neighbors, const string& 
         oscMonitor(oscPort), proximityMonitor(oscPort+1000), beliefs(make_shared<map<string, shared_ptr<Belief>>>()), bdi()
 {
 
+    //TODO: Just Me or All updates
+    //TODO: Research MultiAgent Decision Making processes - voting techniques
+    //TODO: Update Commenting
+    //TODO: Possible options for interactively changing the state if you don't like it - sensors
+    //TODO: Sliding scale for state change time distances...
+
+
     // #############
     // Setup OscOuts for all neighbors
     // #############
@@ -78,7 +85,7 @@ Agent::Agent(int agentID,  map<int, pair<string, int>> neighbors, const string& 
     // #############
     // Configuring Proximity Sensor
     // #############
-
+    // TODO:  Change the method for sensors - shouldn't be a goal
     // ######## Adding OSC Callback For handling proximity messages
     callbackFunction proximityCallback = [&](const osc::ReceivedMessage& message){
 
@@ -113,7 +120,7 @@ Agent::Agent(int agentID,  map<int, pair<string, int>> neighbors, const string& 
         if (result){
             cout << "Proximity Goal Met: " << g << endl;
             float volume = params.at("proximity");
-            patch.sendParameters("set_volume", {volume});
+            patch.sendParameters("volume-fromCpp", {volume});
             updateState("myProximity", volume);
         }
     };
@@ -165,7 +172,7 @@ Agent::Agent(int agentID,  map<int, pair<string, int>> neighbors, const string& 
         if (!result){
             cout << "Volume Goal Not Met: " << g << endl;
             float volume = p.at("worldVolume");
-            patch.sendParameters("set_volume", {volume});
+            patch.sendParameters("volume-fromCpp", {volume});
         }
     };
 
@@ -213,17 +220,17 @@ Agent::Agent(int agentID,  map<int, pair<string, int>> neighbors, const string& 
         if (!result){
             cout << "State Goal Not Met: " << g << endl;
             patch.sendNextState();
-
-            int changeTime = params.at("stateChgTime");
-            int currentTime = params.at("currentTime");
-
         }
     };
 
     srand (time(NULL));
 
-    int minTime = rand() % 45  + 30;
-    int maxTime = rand() % 80  + 60;
+    // TODO: This should change at every state change....
+    int minTime = rand() % 20 + 25;
+    int maxTime = rand() % 25 + 40;
+
+
+//    int maxTime = 15;
 
     goals->push_back( Goal({ "myState", ">=", "blfState", "-", "3", "or",
                              "currentTime", "-", "stateChgTime", "<", to_string(minTime)
@@ -241,13 +248,13 @@ Agent::Agent(int agentID,  map<int, pair<string, int>> neighbors, const string& 
 
     patch.init(this);
 
-    int randTempo = rand() % 75 + 30;
-    patch.sendTempo(randTempo);
+
 }
 
 
 void Agent::start() {
-    patch.sendStart();
+    int randTempo = rand() % 30 + 90;
+    patch.sendStart(randTempo);
     bdi.start();
     oscMonitor.start(); // TODO: Currently Blocking
 }
