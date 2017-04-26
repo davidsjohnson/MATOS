@@ -241,7 +241,7 @@ Agent::Agent(int agentID,  map<int, pair<string, int>> neighbors, const string& 
 
     patch.init(this);
 
-    int randTempo = rand() % 60 + 45;
+    int randTempo = rand() % 75 + 30;
     patch.sendTempo(randTempo);
 }
 

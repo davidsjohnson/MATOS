@@ -3652,7 +3652,7 @@ more elaborate pd-code for deeper control.;
 #X obj 204 151 r open-organelle-map!;
 #X msg 204 198 \; pd-organelle-map vis \$1;
 #X obj 203 272 r open-modules!;
-#N canvas 825 23 618 657 modules 1;
+#N canvas 825 23 618 657 modules 0;
 #X obj 203 81 cnv 15 180 15 empty empty MODULATION: 10 8 0 12 -158136
 -262144 0;
 #X obj 203 102 bng 15 250 50 0 \$0-create-basic-lfo! empty <--BASIC-LFO
@@ -4694,52 +4694,6 @@ for more details.;
 #X obj 353 247 * 1000;
 #X obj 505 145 tabread \$0-notes;
 #X obj 489 166 tabread \$0-durations;
-#N canvas 545 246 678 475 change_pattern 0;
-#N canvas 0 22 450 278 (subpatch) 0;
-#X array \$0-notes 100 float 3;
-#A 0 65 67 71 72 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000
-1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000
-1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000
-1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000
-1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000
-1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000
-1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000
-1000 1000;
-#X coords 0 0 100 1000 200 140 1 0 0;
-#X restore -275 -402 graph;
-#N canvas 0 22 450 278 (subpatch) 0;
-#X array \$0-durations 100 float 3;
-#A 0 8 8 1 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4
-4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4
-4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4
-4;
-#X coords 0 0 99 1000 200 140 1 0 0;
-#X restore -305 -217 graph;
-#X floatatom -568 -176 5 0 0 0 - - -;
-#X obj -637 -299 pack \$1 \$0;
-#X obj -642 -401 r \$0-change_pattern;
-#X obj -568 -138 outlet;
-#X obj -515 -401 loadbang;
-#X obj -629 -347 f;
-#X msg -612 -369 1;
-#X obj -574 -335 + 1;
-#X obj -574 -356 mod 15;
-#X obj 37 37;
-#X obj 37 37;
-#X msg -581 -288 \; \$2-notes read notes/\$1.txt;
-#X msg -635 -233 \; \$2-durations read durations/\$1.txt;
-#X connect 2 0 5 0;
-#X connect 3 0 14 0;
-#X connect 3 0 13 0;
-#X connect 4 0 7 0;
-#X connect 6 0 8 0;
-#X connect 7 0 3 0;
-#X connect 7 0 2 0;
-#X connect 7 0 10 0;
-#X connect 8 0 7 1;
-#X connect 9 0 7 1;
-#X connect 10 0 9 0;
-#X restore 720 23 pd change_pattern;
 #X obj 185 26 loadbang;
 #X obj 294 117 s \$0-change_pattern;
 #X obj 202 118 s \$0-set_tempo;
@@ -4769,7 +4723,7 @@ for more details.;
 #X obj 381 414 == -1;
 #X obj 560 449 trigons 2;
 #X msg 203 88 20;
-#N canvas 402 276 450 300 volume 1;
+#N canvas 402 276 450 300 volume 0;
 #X obj 45 101 f \$0;
 #X obj 23 69 t f b;
 #X obj 30 181 s;
@@ -4787,24 +4741,72 @@ for more details.;
 #X connect 6 0 3 0;
 #X connect 7 0 5 0;
 #X restore 31 218 pd volume;
+#N canvas 740 183 626 489 change_pattern 0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array \$0-notes 100 float 3;
+#A 0 60 64 60 64 60 64 1000 1000 1000 1000 1000 1000 1000 1000 1000
+1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000
+1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000
+1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000
+1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000
+1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000
+1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000
+1000;
+#X coords 0 0 100 1000 200 140 1 0 0;
+#X restore -275 -402 graph;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array \$0-durations 100 float 3;
+#A 0 100 4 100 4 100 4 1000 1000 1000 1000 1000 1000 1000 1000 1000
+1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000
+1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000
+1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000
+1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000
+1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000
+1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000
+1000;
+#X coords 0 0 99 1000 200 140 1 0 0;
+#X restore -305 -217 graph;
+#X floatatom -568 -176 5 0 0 0 - - -;
+#X obj -633 -285 pack \$1 \$0;
+#X obj -642 -401 r \$0-change_pattern;
+#X obj -568 -138 outlet;
+#X obj -515 -401 loadbang;
+#X obj -637 -337 f;
+#X msg -612 -369 1;
+#X obj -574 -335 + 1;
+#X msg -633 -216 \; \$2-durations read durations/\$1.txt;
+#X msg -576 -246 \; \$2-notes read notes/\$1.txt;
+#X obj -637 -313 min 15;
+#X connect 2 0 5 0;
+#X connect 3 0 10 0;
+#X connect 3 0 11 0;
+#X connect 4 0 7 0;
+#X connect 6 0 8 0;
+#X connect 7 0 12 0;
+#X connect 7 0 9 0;
+#X connect 8 0 7 1;
+#X connect 9 0 7 1;
+#X connect 12 0 3 0;
+#X connect 12 0 2 0;
+#X restore 694 18 pd change_pattern;
 #X connect 9 0 15 0;
-#X connect 10 0 48 0;
+#X connect 10 0 47 0;
 #X connect 11 0 16 0;
 #X connect 11 0 19 0;
 #X connect 11 0 23 0;
-#X connect 11 0 63 0;
+#X connect 11 0 62 0;
 #X connect 12 0 17 0;
 #X connect 12 0 18 0;
 #X connect 13 0 35 0;
 #X connect 13 0 36 0;
-#X connect 14 0 51 0;
-#X connect 15 1 39 0;
+#X connect 14 0 50 0;
+#X connect 15 1 38 0;
 #X connect 16 0 19 1;
 #X connect 17 0 18 1;
 #X connect 18 0 28 0;
 #X connect 19 0 22 0;
 #X connect 20 0 21 0;
-#X connect 21 0 64 0;
+#X connect 21 0 63 0;
 #X connect 22 0 20 0;
 #X connect 23 0 14 1;
 #X connect 23 0 14 0;
@@ -4823,30 +4825,30 @@ for more details.;
 #X connect 34 0 27 0;
 #X connect 35 0 11 0;
 #X connect 36 0 12 0;
-#X connect 37 0 42 0;
-#X connect 38 0 46 0;
-#X connect 41 0 32 0;
+#X connect 37 0 45 0;
+#X connect 40 0 32 0;
+#X connect 40 0 57 0;
+#X connect 41 0 42 0;
 #X connect 41 0 58 0;
+#X connect 42 0 43 1;
 #X connect 42 0 43 0;
-#X connect 42 0 59 0;
-#X connect 43 0 44 1;
 #X connect 43 0 44 0;
-#X connect 44 0 45 0;
-#X connect 46 0 10 0;
-#X connect 46 1 65 0;
-#X connect 47 0 49 0;
-#X connect 48 0 47 0;
-#X connect 48 0 13 0;
-#X connect 49 0 48 1;
-#X connect 50 0 48 1;
-#X connect 51 0 10 0;
-#X connect 51 1 50 0;
-#X connect 53 0 64 2;
-#X connect 54 0 15 0;
-#X connect 55 0 57 0;
-#X connect 56 0 55 0;
-#X connect 60 0 52 0;
-#X connect 61 0 60 3;
-#X connect 62 0 61 0;
-#X connect 64 0 60 0;
-#X connect 65 0 40 0;
+#X connect 45 0 10 0;
+#X connect 45 1 64 0;
+#X connect 46 0 48 0;
+#X connect 47 0 46 0;
+#X connect 47 0 13 0;
+#X connect 48 0 47 1;
+#X connect 49 0 47 1;
+#X connect 50 0 10 0;
+#X connect 50 1 49 0;
+#X connect 52 0 63 2;
+#X connect 53 0 15 0;
+#X connect 54 0 56 0;
+#X connect 55 0 54 0;
+#X connect 59 0 51 0;
+#X connect 60 0 59 3;
+#X connect 61 0 60 0;
+#X connect 63 0 59 0;
+#X connect 64 0 39 0;
+#X connect 66 0 41 0;
