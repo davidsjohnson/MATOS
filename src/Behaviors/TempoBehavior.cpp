@@ -7,9 +7,14 @@
 extern int g_agentID;
 
 TempoBehavior::TempoBehavior(Goal g) : goal(g)
-{
-}
+{}
 
+/*!
+ * Initializes the behavior to handle OSC Input from neighbors
+ *
+ * @param beliefs
+ * @param oscMonitor
+ */
 void TempoBehavior::init(Beliefs& beliefs, OscMonitor& oscMonitor){
 
     // Initialize with OSC Input Function from Neighbors
@@ -31,6 +36,7 @@ void TempoBehavior::init(Beliefs& beliefs, OscMonitor& oscMonitor){
 /*!
  * This function should add the required parameters for the corresponding
  * goal to blfParams
+ *
  * @param beliefs - Pointer to the set of current Agent Beliefs
  * @param blfParams - map containing parameters for all goals
  */
@@ -62,6 +68,7 @@ void TempoBehavior::processBeliefs(const Beliefs beliefs, map<string, float>& bl
 
 /*!
  * Adds possible actions to the vector
+ *
  * @param blfParams - map of generated parameter values
  * @param actions - a list of actions to perform and if they are required or not
  */
