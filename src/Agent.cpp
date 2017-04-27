@@ -2,6 +2,7 @@
 // Created by David Johnson on 4/18/17.
 //
 
+#include <PdStateBehavior.h>
 #include "Agent.h"
 
 Agent::Agent(int agentID,  map<int, pair<string, int>> neighbors, const string& pdFile, const int& oscPort) :
@@ -26,10 +27,10 @@ Agent::Agent(int agentID,  map<int, pair<string, int>> neighbors, const string& 
         oscOuts.push_back(o);
     }
 
+
     // ###### Tempo Goal and Behavior
     ActionFunction tempoAction;
     tempoAction = [this](bool result, const Goal& g, map<string, float>& params){
-
             if (!result){
                 cout << "Tempo Goal Not Met: " << g << endl;
                 float tempo = params.at("worldTempo");
@@ -48,6 +49,32 @@ Agent::Agent(int agentID,  map<int, pair<string, int>> neighbors, const string& 
 
     behaviors.push_back(make_shared<TempoBehavior>(tempoGoal));
     // ###### End Tempo Goal and Behavior
+
+
+    // ###### Pd State Goals and Behavior
+    ActionFunction pdStateAction = [this](bool result, const Goal& g, map<string, float>& params){
+
+        if (!result){
+            cout << "State Goal Not Met: " << g << endl;
+            patch.sendNextState();
+        }
+
+    };
+
+    Goal pdStateGoal1({ "myState", ">=", "maxWorldState", "-", "3", "or",
+                             "currentTime", "-", "stateChgTime", "<", "rand(25, 45)"
+                           }, pdStateAction);
+
+    Goal pdStateGoal2({ "currentTime", "-", "stateChgTime", "<", "rand(40, 65)"
+                           }, pdStateAction);
+
+    behaviors.push_back(make_shared<PdStateBehavior>(pdStateGoal1));
+    behaviors.push_back(make_shared<PdStateBehavior>(pdStateGoal2));
+    // ###### End PD State Goals and Behavior
+
+
+
+
 
     // #############
     // Initialize Interpreter with belief, goal and behavior databases

@@ -64,10 +64,12 @@ void Interpreter::start(){
     // TODO: Implement locking mechanisms for beliefs and goals databases
     // TODO: Start Different Thread of Sensor Input
     bdi = thread(&Interpreter::run, this);
+    t_printBeliefs = thread(&Interpreter::printBeliefs, this);
 }
 
 Interpreter::~Interpreter() {
     if (bdi.joinable()) bdi.join();
+    if (t_printBeliefs.joinable()) t_printBeliefs.join();
 }
 
 void Interpreter::setBeliefs(Beliefs beliefs) {
@@ -85,4 +87,15 @@ void Interpreter::run(){
         this_thread::sleep_for(chrono::milliseconds(500));
     }
 
+}
+
+void Interpreter::printBeliefs() {
+
+    while(true) {
+        cout << "Current Beliefs:" << endl;
+        for (auto bPair : *m_beliefs) {
+            cout << "\t" << bPair.first << ": " << *bPair.second << endl;
+        }
+        this_thread::sleep_for(chrono::milliseconds(30000));
+    }
 }

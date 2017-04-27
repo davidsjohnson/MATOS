@@ -35,6 +35,9 @@ private:
     map<string, float>  m_blfParams;
 
     thread              bdi;
+    thread              t_printBeliefs;
+
+    void printBeliefs();
 
 };
 
