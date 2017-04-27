@@ -33,18 +33,28 @@ Agent::Agent(int agentID,  map<int, pair<string, int>> neighbors, const string& 
     tempoAction = [this](bool result, const Goal& g, map<string, float>& params){
             if (!result){
                 cout << "Tempo Goal Not Met: " << g << endl;
-                float tempo = params.at("worldTempo");
+
+                srand(time(NULL));
+                int rnd = rand() % 3 + 1;
+                float worldTempo = params.at("worldTempo");
+                float tempo;
+                if (worldTempo < 40){
+                    tempo = worldTempo*rnd;
+                }
+                else{
+                    tempo = worldTempo/rnd;
+                }
                 patch.sendTempo( tempo);
             }
         };
 
-    Goal tempoGoal = Goal({"myTempo", "==", "worldTempo",           "or",
-                           "myTempo", "==", "worldTempo", "*", "2", "or",
-                           "myTempo", "==", "worldTempo", "*", "3", "or",
-                           "myTempo", "==", "worldTempo", "*", "4", "or",
-                           "myTempo", "==", "worldTempo", "/", "2", "or",
-                           "myTempo", "==", "worldTempo", "/", "3", "or",
-                           "myTempo", "==", "worldTempo", "/", "4"
+    Goal tempoGoal = Goal({"myTempo", "~=", "worldTempo",           "or",
+                           "myTempo", "~=", "worldTempo", "*", "2", "or",
+                           "myTempo", "~=", "worldTempo", "*", "3", "or",
+                           "myTempo", "~=", "worldTempo", "*", "4", "or",
+                           "myTempo", "~=", "worldTempo", "/", "2", "or",
+                           "myTempo", "~=", "worldTempo", "/", "3", "or",
+                           "myTempo", "~=", "worldTempo", "/", "4"
                           }, tempoAction);
 
     behaviors.push_back(make_shared<TempoBehavior>(tempoGoal));
@@ -94,6 +104,7 @@ void Agent::start() {
         b->init(beliefs, oscMonitor);
     }
 
+    srand(time(NULL));
     int randTempo = rand() % 30 + 90;
     patch.sendStart(randTempo);
 
