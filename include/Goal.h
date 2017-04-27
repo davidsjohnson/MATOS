@@ -24,8 +24,9 @@ public:
     Goal(vector<string> infixExpression, ActionFunction callback);
 
     void    setExpression(vector<string> infixExpression);
-    bool    evaluate(map<string, float> params);
+    bool    evaluate(map<string, float>& params);
     void    action(map<string, float>& params);
+    ActionFunction getAction() {return callback;}
 
     string  name;
 

@@ -16,6 +16,8 @@
 #include <time.h>
 #include <sstream>
 #include <fstream>
+#include <numeric>
+#include <unistd.h>
 
 #include "oscpack/osc/OscReceivedElements.h"
 

@@ -18,6 +18,6 @@ set(SOURCE_FILES src/main.cpp include/Agent.h src/Agent.cpp /
         /
         src/AgentComm/OscListener.cpp include/OscListener.h /
         include/Monitor.h include/common.h src/AgentComm/OscMonitor.cpp include/OscMonitor.h /
-        include/cxxopts.hpp include/OscSender.h src/Input/ProximityMonitor.cpp include/ProximityMonitor.h)
+        include/cxxopts.hpp include/OscSender.h src/Input/ProximityMonitor.cpp include/ProximityMonitor.h src/Behaviors/Behavior.cpp include/Behavior.h src/Behaviors/TempoBehavior.cpp include/TempoBehavior.h)
 add_executable(MATO ${SOURCE_FILES})
 target_link_libraries(MATO pd pdcpp rtaudio oscpack)

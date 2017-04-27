@@ -80,7 +80,7 @@ void Goal::setExpression(vector<string> infixExpression) {
 }
 
 
-bool Goal::evaluate(map<string, float> params){
+bool Goal::evaluate(map<string, float>& params){
 
     if (outputQueue.empty())
         throw exception();

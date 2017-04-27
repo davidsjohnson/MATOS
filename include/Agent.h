@@ -14,6 +14,7 @@
 #include "OscMonitor.h"
 #include "OscSender.h"
 #include "ProximityMonitor.h"
+#include "TempoBehavior.h"
 
 class Agent {
 
@@ -49,6 +50,8 @@ private:
     Interpreter bdi;
     Goals       goals;
     Beliefs     beliefs;
+
+    vector<shared_ptr<Behavior>> behaviors;
 
     // Update all neighbors
     void    updateNeighbors(string paramName, float value);

@@ -6,7 +6,8 @@
 
 OscMonitor::OscMonitor(int oscPort) : Monitor(),
         oscIn(oscPort)
-{}
+{
+}
 
 
 void OscMonitor::start() {
