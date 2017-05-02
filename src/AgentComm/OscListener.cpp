@@ -13,7 +13,7 @@ OscListener::OscListener(int port) :
 
             osc::ReceivedMessageArgumentIterator arg = message.ArgumentsBegin();
 
-            cout << "OSC Received | Args: ";
+            cout << "OSC Received | Address: " << message.AddressPattern() << " | Args: ";
             for (; arg!= message.ArgumentsEnd(); arg++)
             {
                 if(arg->IsFloat()){
@@ -40,7 +40,7 @@ OscListener::OscListener(int port) :
         }
     };
 
-    onReceive(".*", func); // Apply to All messages
+//    onReceive(".*", func); // Apply to All messages  TODO: Add debugging options...
 }
 
 OscListener::~OscListener() {
@@ -48,12 +48,12 @@ OscListener::~OscListener() {
 }
 
 void OscListener::start(){
-    t = thread(&OscListener::run, this);
+    shared_ptr<UdpListeningReceiveSocket> socket = make_shared<UdpListeningReceiveSocket>(IpEndpointName(IpEndpointName::ANY_ADDRESS, m_port), this);
+    t = thread(&OscListener::run, this, socket);
 }
 
-void OscListener::run() {
-    UdpListeningReceiveSocket socket( IpEndpointName(IpEndpointName::ANY_ADDRESS, m_port), this );
-    socket.Run();
+void OscListener::run(shared_ptr<UdpListeningReceiveSocket> socket) {
+    socket->Run();
 }
 
 void OscListener::onReceive(string addressPattern, callbackFunction callback) {

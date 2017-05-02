@@ -5,14 +5,14 @@
 #include "Goal.h"
 
 bool is_operator(string token){
-    return token == "<" || token == ">" || token == "==" || token == "!=" || token == ">=" || token == "<=" || token == "and" || token == "or" || token == "+" || token == "*" || token == "/" || token == "-";
+    return token == "~=" || token == "<" || token == ">" || token == "==" || token == "!=" || token == ">=" || token == "<=" || token == "and" || token == "or" || token == "+" || token == "*" || token == "/" || token == "-";
 }
 
 int precedence(string token){
 
     if (token == "*" || token == "/") return 3;
     if (token == "+" || token == "-") return 2;
-    if (token == "<" || token == ">" || token == "==" || token == ">=" || token == "<=" || token == "!=") return 1;
+    if (token == "~=" || token == "<" || token == ">" || token == "==" || token == ">=" || token == "<=" || token == "!=") return 1;
     if (token == "and" || token == "or") return 0;
     else throw exception();
 }
@@ -37,6 +37,10 @@ bool evaluateCondition(int operand1, int operand2, string op){
     if (op == ">")      return operand2 > operand1;
     if (op == "and")    return operand2 && operand1;
     if (op == "or")     return operand2 || operand1;
+
+    if(op == "~="){
+        return abs(operand1 - operand2) < 1.5;
+    }
 
     return true;
 }
@@ -80,7 +84,7 @@ void Goal::setExpression(vector<string> infixExpression) {
 }
 
 
-bool Goal::evaluate(map<string, float> params){
+bool Goal::evaluate(map<string, float>& params){
 
     if (outputQueue.empty())
         throw exception();

@@ -23,10 +23,13 @@ public:
     PdPatch(const string& filename);
     ~PdPatch();
 
-    void        sendStart();
+    void        sendStart(float tempo);
     void        sendNextState();
     void        sendTempo(float tempo);
     void        sendParameters(const string& receiver, initializer_list<float> args);
+    void        sendBang(const string& dest);
+
+    string      dollarZeroStr();
 
     void        init(Agent* agent);
 

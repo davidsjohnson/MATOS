@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.6)
 project(MATO)
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 14)
 
 include_directories(include)
 include_directories(/usr/local/include)
@@ -17,7 +17,7 @@ set(SOURCE_FILES src/main.cpp include/Agent.h src/Agent.cpp /
         src/BDI/Goal.cpp include/Goal.h
         /
         src/AgentComm/OscListener.cpp include/OscListener.h /
-        include/Monitor.h include/common.h src/AgentComm/OscMonitor.cpp include/OscMonitor.h /
-        include/cxxopts.hpp include/OscSender.h src/Input/ProximityMonitor.cpp include/ProximityMonitor.h)
+        include/common.h src/AgentComm/OscMonitor.cpp include/OscMonitor.h /
+        include/cxxopts.hpp include/OscSender.h include/SensorMonitor.h include/Behavior.h src/Behaviors/TempoBehavior.cpp include/TempoBehavior.h src/Behaviors/PdStateBehavior.cpp include/PdStateBehavior.h)
 add_executable(MATO ${SOURCE_FILES})
 target_link_libraries(MATO pd pdcpp rtaudio oscpack)

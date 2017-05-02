@@ -7,13 +7,14 @@
 
 #include "Belief.h"
 #include "Goal.h"
+#include "Behavior.h"
+#include "TempoBehavior.h"
 
 
 class Interpreter {
 
 public:
-    Interpreter() : m_beliefs(), m_goals() {}
-    Interpreter(Beliefs beliefs, Goals goals);
+    Interpreter() : m_behaviors(), m_beliefs(), m_goals() {}
 
     ~Interpreter();
 
@@ -24,13 +25,19 @@ public:
 
     void setBeliefs(Beliefs m_beliefs);
     void setGoals(Goals m_goals);
+    void setBehaviors(vector<shared_ptr<Behavior>> behaviors){m_behaviors = behaviors;}
 
 private:
+
+    vector<shared_ptr<Behavior>>    m_behaviors;
     Beliefs             m_beliefs;
     Goals               m_goals;
-    map<string, float>    m_blfParams;
+    map<string, float>  m_blfParams;
 
     thread              bdi;
+    thread              t_printBeliefs;
+
+    void printBeliefs();
 
 };
 
