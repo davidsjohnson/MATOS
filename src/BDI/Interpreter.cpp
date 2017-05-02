@@ -92,10 +92,11 @@ void Interpreter::run(){
 void Interpreter::printBeliefs() {
 
     while(true) {
-        cout << "Current Beliefs:" << endl;
+        cout << "\nCurrent Beliefs:" << endl;
         for (auto bPair : *m_beliefs) {
             cout << "\t" << bPair.first << ": " << *bPair.second << endl;
         }
+        cout << endl;
         this_thread::sleep_for(chrono::milliseconds(30000));
     }
 }

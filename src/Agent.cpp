@@ -35,11 +35,11 @@ Agent::Agent(int agentID,  map<int, pair<string, int>> neighbors, const string& 
                 cout << "Tempo Goal Not Met: " << g << endl;
 
                 srand(time(NULL));
-                int rnd = rand() % 3 + 1;
+                int rnd = rand() % 2 + 1;
                 float worldTempo = params.at("worldTempo");
                 float tempo;
-                if (worldTempo < 40){
-                    tempo = worldTempo*rnd;
+                if (worldTempo <= 65){
+                    tempo = worldTempo*(rnd);
                 }
                 else{
                     tempo = worldTempo/rnd;
@@ -81,8 +81,6 @@ Agent::Agent(int agentID,  map<int, pair<string, int>> neighbors, const string& 
     behaviors.push_back(make_shared<PdStateBehavior>(pdStateGoal1));
     behaviors.push_back(make_shared<PdStateBehavior>(pdStateGoal2));
     // ###### End PD State Goals and Behavior
-
-
 
 
 

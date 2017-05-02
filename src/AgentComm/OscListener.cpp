@@ -40,7 +40,7 @@ OscListener::OscListener(int port) :
         }
     };
 
-    onReceive(".*", func); // Apply to All messages
+//    onReceive(".*", func); // Apply to All messages  TODO: Add debugging options...
 }
 
 OscListener::~OscListener() {

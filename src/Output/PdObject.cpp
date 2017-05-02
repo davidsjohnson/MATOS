@@ -17,11 +17,11 @@ void PdObject::print(const std::string& message) {
 
 //--------------------------------------------------------------
 void PdObject::receiveBang(const std::string& dest) {
-    cout << "CPP: bang " << dest << endl;
+//    cout << "CPP: bang " << dest << endl;
 }
 
 void PdObject::receiveFloat(const std::string& dest, float num) {
-    cout << "CPP: float " << dest << ": " << num << endl;
+//    cout << "CPP: float " << dest << ": " << num << endl;  TODO: Add debugging options
 
     // TODO:  Fix Circular reference issues...
     string exp = "\\d{4}-([a-zA-z]+?)-toCpp";
@@ -43,11 +43,11 @@ void PdObject::receiveFloat(const std::string& dest, float num) {
 }
 
 void PdObject::receiveSymbol(const std::string& dest, const std::string& symbol) {
-    cout << "CPP: symbol " << dest << ": " << symbol << endl;
+//    cout << "CPP: symbol " << dest << ": " << symbol << endl;
 }
 
 void PdObject::receiveList(const std::string& dest, const List& list) {
-    cout << "CPP: list " << dest << ": ";
+//    cout << "CPP: list " << dest << ": ";
 
     // step through the list
     for(int i = 0; i < list.len(); ++i) {

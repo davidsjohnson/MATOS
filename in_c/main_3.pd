@@ -4717,7 +4717,7 @@ for more details.;
 #X connect 5 0 3 0;
 #X connect 7 0 4 0;
 #X restore 176 88 pd volume;
-#N canvas 861 411 289 192 start 0;
+#N canvas 861 411 289 192 start 1;
 #X obj 51 10 r \$0-start-fromCpp;
 #X obj 10 155 outlet;
 #X obj 10 10 inlet;
@@ -4729,9 +4729,7 @@ for more details.;
 #X obj 10 54 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
 -1;
 #X obj 39 33 t b f;
-#X obj 138 84 print;
 #X connect 0 0 9 0;
-#X connect 0 0 10 0;
 #X connect 2 0 8 0;
 #X connect 3 0 5 1;
 #X connect 5 0 4 0;
@@ -4757,7 +4755,6 @@ for more details.;
 #X obj 280 157 tabread \$0-durations;
 #X text 704 582 Do Not Remove MAESTRO4 obj. Needed by MATOS_cpp;
 #X obj 484 33 loadbang;
-#X msg 142 197 45;
 #X obj 135 153 loadbang;
 #X obj 733 263 basic-lfo 2;
 #X obj 487 336 bwl-osc 2;
@@ -4768,7 +4765,7 @@ for more details.;
 #N canvas 803 183 505 368 change_pattern 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array \$0-notes 100 float 3;
-#A 0 60 64 65 64 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000
+#A 0 -1 64 65 64 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000
 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000
 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000
 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000
@@ -4780,7 +4777,7 @@ for more details.;
 #X restore -390 -396 graph;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array \$0-durations 100 float 3;
-#A 0 100 8 8 4 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000
+#A 0 8 8 8 8 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000
 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000
 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000
 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000
@@ -4827,6 +4824,7 @@ for more details.;
 #X obj 726 48 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
 -1;
 #X floatatom 726 82 5 0 0 0 - - -;
+#X msg 142 197 90;
 #X connect 9 0 34 0;
 #X connect 10 0 14 0;
 #X connect 10 0 17 0;
@@ -4841,7 +4839,7 @@ for more details.;
 #X connect 16 0 25 0;
 #X connect 17 0 18 0;
 #X connect 18 0 19 0;
-#X connect 19 0 54 0;
+#X connect 19 0 53 0;
 #X connect 20 0 13 1;
 #X connect 20 0 13 0;
 #X connect 21 0 22 0;
@@ -4873,11 +4871,11 @@ for more details.;
 #X connect 47 0 43 0;
 #X connect 48 0 11 0;
 #X connect 50 0 36 0;
-#X connect 51 0 29 0;
-#X connect 52 0 51 0;
-#X connect 53 0 54 1;
-#X connect 53 0 55 1;
-#X connect 54 0 55 0;
-#X connect 55 0 38 0;
-#X connect 56 0 58 0;
-#X connect 57 0 56 0;
+#X connect 51 0 58 0;
+#X connect 52 0 53 1;
+#X connect 52 0 54 1;
+#X connect 53 0 54 0;
+#X connect 54 0 38 0;
+#X connect 55 0 57 0;
+#X connect 56 0 55 0;
+#X connect 58 0 29 0;

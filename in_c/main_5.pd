@@ -4730,9 +4730,7 @@ for more details.;
 #X obj 10 54 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
 -1;
 #X obj 39 33 t b f;
-#X obj 138 84 print;
 #X connect 0 0 9 0;
-#X connect 0 0 10 0;
 #X connect 2 0 8 0;
 #X connect 3 0 5 1;
 #X connect 5 0 4 0;

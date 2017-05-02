@@ -1,4 +1,4 @@
-#N canvas 261 222 1024 804 10;
+#N canvas 135 100 1024 804 10;
 #X declare -path patch_editor_abs;
 #X obj 7 692 declare -path patch_editor_abs;
 #N canvas 392 117 718 398 patch-editor-do-not-delete 0;
@@ -4717,7 +4717,7 @@ for more details.;
 #X connect 5 0 3 0;
 #X connect 7 0 4 0;
 #X restore 176 88 pd volume;
-#N canvas 861 411 289 192 start 0;
+#N canvas 861 411 289 192 start 1;
 #X obj 51 10 r \$0-start-fromCpp;
 #X obj 10 155 outlet;
 #X obj 10 10 inlet;
@@ -4729,9 +4729,7 @@ for more details.;
 #X obj 10 54 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
 -1;
 #X obj 39 33 t b f;
-#X obj 138 84 print;
 #X connect 0 0 9 0;
-#X connect 0 0 10 0;
 #X connect 2 0 8 0;
 #X connect 3 0 5 1;
 #X connect 5 0 4 0;
@@ -4770,7 +4768,7 @@ for more details.;
 #N canvas 803 183 505 368 change_pattern 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array \$0-notes 100 float 3;
-#A 0 60 64 65 64 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000
+#A 0 -1 64 65 64 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000
 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000
 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000
 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000
@@ -4782,7 +4780,7 @@ for more details.;
 #X restore -390 -396 graph;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array \$0-durations 100 float 3;
-#A 0 100 8 8 4 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000
+#A 0 8 8 8 8 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000
 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000
 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000
 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000
