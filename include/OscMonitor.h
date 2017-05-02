@@ -5,12 +5,10 @@
 #ifndef MATO_OSCMONITOR_H
 #define MATO_OSCMONITOR_H
 
-#include "Monitor.h"
-
 #include "OscListener.h"
 
 
-class OscMonitor : public Monitor {
+class OscMonitor{
 
 public:
 

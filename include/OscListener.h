@@ -29,7 +29,7 @@ private:
     thread t;
 
     virtual void    ProcessMessage(const osc::ReceivedMessage& m, const IpEndpointName& endpoint);
-    void            run();
+    void            run(shared_ptr<UdpListeningReceiveSocket> socket);
 
 
 };

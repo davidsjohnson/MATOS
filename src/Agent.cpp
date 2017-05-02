@@ -2,7 +2,6 @@
 // Created by David Johnson on 4/18/17.
 //
 
-#include <PdStateBehavior.h>
 #include "Agent.h"
 
 Agent::Agent(int agentID,  map<int, pair<string, int>> neighbors, const string& pdFile, const int& oscPort) :
@@ -91,6 +90,28 @@ Agent::Agent(int agentID,  map<int, pair<string, int>> neighbors, const string& 
     bdi.setGoals(goals);
     bdi.setBehaviors(behaviors);
 
+
+    // #############
+    // Set up Sensor Input
+    // #############
+
+    // Create a callback function for the sensor
+    callbackFunction proximitySensorCallback = [&](const osc::ReceivedMessage& message) {
+        osc::ReceivedMessageArgumentIterator arg = message.ArgumentsBegin();
+        try{
+            float value = arg->AsFloat();  // for now only one argument for proximity as values come from TouchOSC for demo...
+            patch.sendParameters("volume-fromCpp", {value});
+        }
+        catch(exception e){
+            cout << "Error Adding Proximity Belief: " << e.what() << endl;
+        }
+    };
+
+        // Create the sensor
+    proximityMonitor.addFunction("/proximity/.*", proximitySensorCallback);                  // Add the callback
+    proximityMonitor.start();                                                                // Start the sensor
+
+    //Initialize the Patch
     patch.init(this);
 
 }

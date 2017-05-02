@@ -29,6 +29,8 @@ public:
     void        sendParameters(const string& receiver, initializer_list<float> args);
     void        sendBang(const string& dest);
 
+    string      dollarZeroStr();
+
     void        init(Agent* agent);
 
 private:

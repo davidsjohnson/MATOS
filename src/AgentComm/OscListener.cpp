@@ -48,12 +48,12 @@ OscListener::~OscListener() {
 }
 
 void OscListener::start(){
-    t = thread(&OscListener::run, this);
+    shared_ptr<UdpListeningReceiveSocket> socket = make_shared<UdpListeningReceiveSocket>(IpEndpointName(IpEndpointName::ANY_ADDRESS, m_port), this);
+    t = thread(&OscListener::run, this, socket);
 }
 
-void OscListener::run() {
-    UdpListeningReceiveSocket socket( IpEndpointName(IpEndpointName::ANY_ADDRESS, m_port), this );
-    socket.Run();
+void OscListener::run(shared_ptr<UdpListeningReceiveSocket> socket) {
+    socket->Run();
 }
 
 void OscListener::onReceive(string addressPattern, callbackFunction callback) {

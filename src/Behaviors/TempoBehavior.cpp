@@ -26,7 +26,7 @@ void TempoBehavior::init(Beliefs& beliefs, OscMonitor& oscMonitor){
             (*beliefs)[message.AddressPattern()] = make_shared<Belief>("tempo", tempo);
         }
         catch(exception e){
-            cout << "Error: " << e.what() << endl;
+            cout << "Error Adding Tempo Belief: " << e.what() << endl;
         }
     };
     oscMonitor.addFunction("/tempo/.*", tempoIn);

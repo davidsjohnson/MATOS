@@ -6,18 +6,22 @@
 #define MATO_PROXIMITYMONITOR_H
 
 #include "common.h"
-#include "Monitor.h"
 #include "OscListener.h"
 
-class ProximityMonitor : public Monitor{
+class SensorMonitor{
 
 public:
 
-    ProximityMonitor(int oscPort);
+    SensorMonitor(int oscPort) : oscIn(oscPort) {}
 
-    void start() override;
+    virtual void start(){
+        oscIn.start();
+    }
 
-    void addFunction(string name, callbackFunction func) override;
+    virtual void addFunction(string name, callbackFunction func){
+        oscIn.onReceive(name, func);
+    }
+
 
 private:
 

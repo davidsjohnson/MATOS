@@ -119,5 +119,9 @@ void PdPatch::sendParameters(const string &receiver, initializer_list<float> arg
     pd.finishList(ss.str());
 }
 
+string PdPatch::dollarZeroStr() {
+    return patch.dollarZeroStr();
+}
+
 
 
