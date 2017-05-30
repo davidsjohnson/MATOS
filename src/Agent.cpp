@@ -18,6 +18,13 @@ Agent::Agent(int agentID,  map<int, pair<string, int>> neighbors, const string& 
     //TODO: Possible options for interactively changing the state if you don't like it - sensors
     //TODO: Sliding scale for state change time distances...
 
+    //TODO: Implement Granular Synthsis Patches
+    //TODO:    User proximity influences grain size
+    //TODO: Implement Audio Input and Recording
+    //TODO:     Recordings are used for grains
+    //TODO:     Grain length is influenced by...
+    //TODO:     Other parameters for agent selection?
+
     // #############
     // Setup OscOuts for all neighbors
     // #############
