@@ -36,7 +36,7 @@ private:
     string              patchFile;
 
 
-    //Output/Audio Objects
+    //IO/Audio Objects
     PdPatch patch;
 
     //TODO: Sensor AgentComm Objects Go Here
