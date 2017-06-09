@@ -10,14 +10,14 @@ include_directories(/usr/local/include/rtaudio)
 link_directories(/usr/local/lib)
 
 set(SOURCE_FILES src/main.cpp include/Agent.h src/Agent.cpp /
-        include/PdPatch.h src/Output/PdPatch.cpp /
-        src/Output/PdObject.cpp include/PdObject.h /
+        include/PdPatch.h src/IO/PdPatch.cpp /
+        src/IO/PdObject.cpp include/PdObject.h /
         src/BDI/Interpreter.cpp include/Interpreter.h /
         src/BDI/Belief.cpp include/Belief.h /
         src/BDI/Goal.cpp include/Goal.h
         /
         src/AgentComm/OscListener.cpp include/OscListener.h /
         include/common.h src/AgentComm/OscMonitor.cpp include/OscMonitor.h /
-        include/cxxopts.hpp include/OscSender.h include/SensorMonitor.h include/Behavior.h src/Behaviors/TempoBehavior.cpp include/TempoBehavior.h src/Behaviors/PdStateBehavior.cpp include/PdStateBehavior.h)
+        include/cxxopts.hpp include/OscSender.h include/SensorMonitor.h include/Behavior.h src/Behaviors/TempoBehavior.cpp include/TempoBehavior.h src/Behaviors/PdStateBehavior.cpp include/PdStateBehavior.h src/IO/AudioIn.cpp include/AudioIn.h)
 add_executable(MATO ${SOURCE_FILES})
 target_link_libraries(MATO pd pdcpp rtaudio oscpack)
