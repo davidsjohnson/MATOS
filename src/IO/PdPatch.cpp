@@ -6,10 +6,16 @@
 
 int audioCallback(void *outputBuffer, void *inputBuffer, unsigned int nBufferFrames, double streamTime, RtAudioStreamStatus status, void *userData) {
 
-            int ticks = nBufferFrames / 64;
+//    for (int i=0; i<nBufferFrames; ++i){
+//        cout << ((float*)inputBuffer)[i] << endl;
+//    }
 
-            PdPatch* pd = (PdPatch*)userData;
-            pd->pd.processFloat(ticks, (float*)inputBuffer, (float*)outputBuffer);
+    int ticks = nBufferFrames / 64;
+
+    PdPatch* pd = (PdPatch*)userData;
+    pd->pd.processFloat(ticks, (float*)inputBuffer, (float*)outputBuffer);
+
+//    memcpy(outputBuffer, inputBuffer, sizeof(float)*nBufferFrames);
 
     return 0;
 };
@@ -34,7 +40,7 @@ PdPatch::~PdPatch() {
 
 void PdPatch::init(Agent* agent) {
 
-    if(!pd.init(0, 2, srate)) {
+    if(!pd.init(2, 2, srate)) {
         cerr << "Could not initialize PD" << endl;
         exit(1);
     }
@@ -64,9 +70,13 @@ void PdPatch::init(Agent* agent) {
         exit(1);
     }
 
-    RtAudio::StreamParameters parameters;
-    parameters.deviceId = audio->getDefaultOutputDevice();
-    parameters.nChannels = 2;
+    RtAudio::StreamParameters outputParameters;
+    outputParameters.deviceId = audio->getDefaultOutputDevice();
+    outputParameters.nChannels = 2;
+
+    RtAudio::StreamParameters inputParameters;
+    inputParameters.deviceId = audio->getDefaultInputDevice();
+    inputParameters.nChannels = 2;
 
     RtAudio::StreamOptions options;
     options.streamName = "Tangible Agent";
@@ -76,7 +86,7 @@ void PdPatch::init(Agent* agent) {
     }
 
     try{
-        audio->openStream(&parameters, NULL, RTAUDIO_FLOAT32, srate, &n_bufferFrames, &audioCallback, this, &options, &errorCallback);
+        audio->openStream(&outputParameters, &inputParameters, RTAUDIO_FLOAT32, srate, &n_bufferFrames, &audioCallback, this, &options, &errorCallback);
         audio->startStream();
     }
     catch ( RtAudioError& e){
