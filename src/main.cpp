@@ -2,8 +2,6 @@
 #include "cxxopts.hpp"
 #include "common.h"
 
-#include <fstream>
-
 using namespace std;
 
 int g_agentID;   // TODO:  Find better options for this

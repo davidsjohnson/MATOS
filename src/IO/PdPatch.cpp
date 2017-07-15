@@ -94,7 +94,7 @@ void PdPatch::init(Agent* agent) {
         exit(1);
     }
 
-    sendNextState();
+    sendState(0);
     sendParameters("-volume-fromCpp", {40.0f});
     sendParameters("-volume-fromCpp", {40.0f});
 }
@@ -105,8 +105,8 @@ void PdPatch::sendStart(float tempo){
 }
 
 
-void PdPatch::sendNextState(){
-    pd.sendBang(patch.dollarZeroStr() + "-state-fromCpp");
+void PdPatch::sendState(int state_num) {
+    pd.sendFloat(patch.dollarZeroStr() + "-state-fromCpp", state_num);
 }
 
 

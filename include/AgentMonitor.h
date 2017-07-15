@@ -1,18 +1,16 @@
 //
-// Created by David Johnson on 4/24/17.
+// Created by David Johnson on 4/19/17.
 //
 
-#ifndef MATO_PROXIMITYMONITOR_H
-#define MATO_PROXIMITYMONITOR_H
+#ifndef MATO_OSCMONITOR_H
+#define MATO_OSCMONITOR_H
 
-#include "common.h"
 #include "OscListener.h"
 
-
 /**
- * Listens for communication from sensors
+ * Listens for messages from neighboring agents
  */
-class SensorMonitor{
+class AgentMonitor{
 
 public:
 
@@ -21,15 +19,13 @@ public:
      *
      * @param oscPort
      */
-    SensorMonitor(int oscPort) : oscIn(oscPort) {}
+    AgentMonitor(int oscPort);
 
 
     /**
      * Starts the monitor
      */
-    virtual void start(){
-        oscIn.start();
-    }
+    virtual void start();
 
 
     /**
@@ -40,16 +36,12 @@ public:
      * @param callback - the function to run if pattern is matched, should be of type:
      *      typedef std::function<void(const osc::ReceivedMessage& message)> callbackFunction;
      */
-    virtual void addFunction(string name, callbackFunction func){
-        oscIn.onReceive(name, func);
-    }
-
+    virtual void addFunction(string paramAddr, callbackFunction callback);
 
 private:
-
     OscListener oscIn;
 
 };
 
 
-#endif //MATO_PROXIMITYMONITOR_H
+#endif //MATO_OSCMONITOR_H

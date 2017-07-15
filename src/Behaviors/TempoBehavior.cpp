@@ -15,7 +15,7 @@ TempoBehavior::TempoBehavior(Goal g) : goal(g)
  * @param beliefs
  * @param oscMonitor
  */
-void TempoBehavior::init(Beliefs& beliefs, OscMonitor& oscMonitor){
+void TempoBehavior::init(Beliefs& beliefs, AgentMonitor& oscMonitor){
 
     // Initialize with OSC Input Function from Neighbors
     callbackFunction tempoIn = [&](const osc::ReceivedMessage& message) {

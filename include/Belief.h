@@ -8,8 +8,16 @@
 #include "common.h"
 
 class Belief;
+
+/**
+ * The agent's database of all beliefs representing the agent's
+ * knowledge of its environment
+ */
 typedef shared_ptr<map<string, shared_ptr<Belief>>> Beliefs;
 
+/**
+ * A Belief is a represented by a parameter name and an associated value
+ */
 class Belief{
 
 public:

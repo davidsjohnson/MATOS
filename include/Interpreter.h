@@ -11,20 +11,49 @@
 #include "TempoBehavior.h"
 
 
+/**
+ * The Interpreter is the core of the BDI model. Running an update loop at 2 frames
+ * per second.  Each iteration of update processes the agent's beliefs, generating
+ * actions based on the beliefs and agent goals and then performing those actions.
+ * After an interpreter is created the agent should then register the belief, goal
+ * and behavior databases before starting the agent.
+ *      Example:
+ *              Interpreter bdi;
+ *              bdi.setBeliefs(beliefs)
+ *              bdi.setGoals(goals)
+ *              bdi.setBehaviors(behaviors)
+ *              bdi.start()
+ */
 class Interpreter {
 
 public:
     Interpreter() : m_behaviors(), m_beliefs(), m_goals() {}
-
     ~Interpreter();
 
-//    static void update(map<string, shared_ptr<Belief>>& beliefs, vector<Goal>& goals, map<string, int> blfParams);
-    void update();
+    /**
+     * starts the interpreter
+     */
     void start();
-    void run();
 
-    void setBeliefs(Beliefs m_beliefs);
-    void setGoals(Goals m_goals);
+
+    /**
+     * registers the agent's belief database
+     * @param beliefs - the agent's belief database
+     */
+    void setBeliefs(Beliefs beliefs);
+
+
+    /**
+     * registers the agent's goal database
+     * @param goals - the agent's goal database
+     */
+    void setGoals(Goals goals);
+
+
+    /**
+     * registers the agent's behavior database
+     * @param behaviors - the agents behavior database
+     */
     void setBehaviors(vector<shared_ptr<Behavior>> behaviors){m_behaviors = behaviors;}
 
 private:
@@ -37,6 +66,8 @@ private:
     thread              bdi;
     thread              t_printBeliefs;
 
+    void update();
+    void run();
     void printBeliefs();
 
 };
