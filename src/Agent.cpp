@@ -72,7 +72,7 @@ Agent::Agent(int agentID,  map<int, pair<string, int>> neighbors, const string& 
 
         if (!result){
             cout << "State Goal Not Met: " << g << endl;
-            patch.sendNextState();
+            patch.sendState(params["myState"]+1);
         }
 
     };

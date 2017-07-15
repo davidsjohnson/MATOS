@@ -17,7 +17,7 @@ set(SOURCE_FILES src/main.cpp include/Agent.h src/Agent.cpp /
         src/BDI/Goal.cpp include/Goal.h
         /
         src/AgentComm/OscListener.cpp include/OscListener.h /
-        include/common.h src/AgentComm/OscMonitor.cpp include/OscMonitor.h /
-        include/cxxopts.hpp include/OscSender.h include/SensorMonitor.h include/Behavior.h src/Behaviors/TempoBehavior.cpp include/TempoBehavior.h src/Behaviors/PdStateBehavior.cpp include/PdStateBehavior.h src/IO/AudioIn.cpp include/AudioIn.h)
+        include/common.h src/AgentComm/AgentMonitor.cpp include/AgentMonitor.h /
+        include/cxxopts.hpp include/OscSender.h include/SensorMonitor.h include/Behavior.h src/Behaviors/TempoBehavior.cpp include/TempoBehavior.h src/Behaviors/PdStateBehavior.cpp include/PdStateBehavior.h)
 add_executable(MATO ${SOURCE_FILES})
 target_link_libraries(MATO pd pdcpp rtaudio oscpack)

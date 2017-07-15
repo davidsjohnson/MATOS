@@ -11,7 +11,9 @@
 
 class Agent;
 
-// custom receiver class
+/**
+ * The base PD Object class to handle incoming messages
+ */
 class PdObject : public pd::PdReceiver, public pd::PdMidiReceiver {
 
 public:

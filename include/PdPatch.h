@@ -16,6 +16,9 @@ using namespace pd;
 
 class Agent;
 
+/**
+ * runs the pd patch specified in the constructor
+ */
 class PdPatch {
 
 public:
@@ -24,22 +27,21 @@ public:
     ~PdPatch();
 
     void        sendStart(float tempo);
-    void        sendNextState();
+    void        sendState(int state_num);
     void        sendTempo(float tempo);
     void        sendParameters(const string& receiver, initializer_list<float> args);
     void        sendBang(const string& dest);
-
     string      dollarZeroStr();
 
     void        init(Agent* agent);
 
 private:
 
-    PdBase      pd;
-    PdObject    pdO;
-    Patch       patch;
+    PdBase                  pd;
+    PdObject                pdO;
+    Patch                   patch;
     shared_ptr<RtAudio>     audio;
-    string      pdFile;
+    string                  pdFile;
 
     unsigned int    srate;
     unsigned int    n_bufferFrames;

@@ -11,7 +11,7 @@
 #include "Interpreter.h"
 #include "Belief.h"
 #include "Goal.h"
-#include "OscMonitor.h"
+#include "AgentMonitor.h"
 #include "OscSender.h"
 #include "SensorMonitor.h"
 #include "TempoBehavior.h"
@@ -60,24 +60,26 @@ public:
      */
     void    updateState(string paramName, float value);
 
-
+    /**
+     *
+     * @return the agents ID
+     */
     int     getAgentID(){return id;}
 
 private:
 
+    // Agent Infosd
     int                 id;
     int                 oscPort;
     string              patchFile;
 
-
-    //IO/Audio Objects
+    //Audio Objects
     PdPatch patch;
-
 
     //Agent to Agent Communication Objects
     map<int, pair<string, int>>     neighbors;
     vector<shared_ptr<OscSender>>   oscOuts;
-    OscMonitor                      oscMonitor;
+    AgentMonitor                      oscMonitor;
 
     // Senors
     SensorMonitor                   proximityMonitor;
@@ -87,6 +89,7 @@ private:
     Goals                           goals;
     Beliefs                         beliefs;
     vector<shared_ptr<Behavior>>    behaviors;
+
 
     /**
      * Updates all neighbors with the value for the given parameter

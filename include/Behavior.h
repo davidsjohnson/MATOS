@@ -9,32 +9,37 @@
 
 #include "Goal.h"
 #include "Belief.h"
-#include "OscMonitor.h"
+#include "AgentMonitor.h"
 
+/**
+ * Interface for BDI behaviors.  Behaviors represent what action an
+ * agent should perform for a specified belief (or set of beliefs).  All
+ * behaviors should implement this interface.
+ */
 class Behavior {
 
 public:
 
-    /*!
+    /**
      * Initializes the behavior to handle OSC Input from neighbors
      *
-     * @param beliefs
-     * @param oscMonitor
+     * @param beliefs - reference to the agents belief database
+     * @param agentMonitor - the monitor that is listening for state changes
      */
-    virtual void init(Beliefs& beliefs, OscMonitor& oscMonitor) = 0;
+    virtual void init(Beliefs& beliefs, AgentMonitor& agentMonitor) = 0;
 
-    /*!
+    /**
      * processBeliefs should add the required parameters for the corresponding
      * goal to blfParams
      *
-     * @param beliefs - Pointer to the set of current Agent Beliefs
-     * @param blfParams - map containing parameters for all goals
+     * @param beliefs - the set of current Agent Beliefs
+     * @param blfParams - map containing parameters required for all goals
      */
     virtual void processBeliefs(const Beliefs beliefs, map<string, float>& blfParams) = 0;
 
 
-    /*!
-     * generate Actions adds possible actions to the list of actions
+    /**
+     * generates a list of possible actions for the agent to perform
      *
      * @param blfParams - map of generated parameter values
      * @param actions - a list of actions to perform and if they are required or not

@@ -6,7 +6,7 @@
 
 extern int g_agentID;
 
-void PdStateBehavior::init(Beliefs &beliefs, OscMonitor &oscMonitor) {
+void PdStateBehavior::init(Beliefs &beliefs, AgentMonitor &oscMonitor) {
 
     // Initialize with OSC Input Function from Neighbors
     callbackFunction stateIn = [&](const osc::ReceivedMessage& message) {
