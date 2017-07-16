@@ -8,7 +8,7 @@ OscListener::OscListener(int port) :
         osc::OscPacketListener(), m_port(port)
 {
     //Default Callback function a osc Callback
-    callbackFunction func = [](const osc::ReceivedMessage& message){
+    CallbackFunction func = [](const osc::ReceivedMessage& message){
         try{
 
             osc::ReceivedMessageArgumentIterator arg = message.ArgumentsBegin();
@@ -56,7 +56,7 @@ void OscListener::run(shared_ptr<UdpListeningReceiveSocket> socket) {
     socket->Run();
 }
 
-void OscListener::onReceive(string addressPattern, callbackFunction callback) {
+void OscListener::onReceive(string addressPattern, CallbackFunction callback) {
     messages[addressPattern] = callback;
 }
 
@@ -71,7 +71,7 @@ void OscListener::ProcessMessage(const osc::ReceivedMessage& m, const IpEndpoint
         regex r(address);
 
         if (regex_match(m.AddressPattern(), r)) {
-            callbackFunction callback = callbackPair.second;
+            CallbackFunction callback = callbackPair.second;
 
             try {
                 callback(m);

@@ -36,7 +36,7 @@ public:
      * @param callback - the function to run if pattern is matched, should be of type:
      *      typedef std::function<void(const osc::ReceivedMessage& message)> callbackFunction;
      */
-    virtual void addFunction(string paramAddr, callbackFunction callback);
+    virtual void addFunction(string paramAddr, CallbackFunction callback);
 
 private:
     OscListener oscIn;

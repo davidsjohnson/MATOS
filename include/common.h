@@ -23,6 +23,6 @@
 
 using namespace std;
 
-typedef std::function<void(const osc::ReceivedMessage& message)> callbackFunction;
+typedef std::function<void(const osc::ReceivedMessage& message)> CallbackFunction;
 
 #endif //MATO_COMMON_H

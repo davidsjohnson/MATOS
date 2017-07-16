@@ -40,7 +40,7 @@ public:
      * @param callback - the function to run if pattern is matched, should be of type:
      *      typedef std::function<void(const osc::ReceivedMessage& message)> callbackFunction;
      */
-    virtual void addFunction(string name, callbackFunction func){
+    virtual void addFunction(string name, CallbackFunction func){
         oscIn.onReceive(name, func);
     }
 

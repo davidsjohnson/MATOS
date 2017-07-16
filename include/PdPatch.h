@@ -26,6 +26,7 @@ public:
     PdPatch(const string& filename);
     ~PdPatch();
 
+    void        sendStart();
     void        sendStart(float tempo);
     void        sendState(int state_num);
     void        sendTempo(float tempo);

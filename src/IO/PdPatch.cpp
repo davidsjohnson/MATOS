@@ -96,7 +96,11 @@ void PdPatch::init(Agent* agent) {
 
     sendState(0);
     sendParameters("-volume-fromCpp", {40.0f});
-    sendParameters("-volume-fromCpp", {40.0f});
+}
+
+
+void PdPatch::sendStart(){
+    pd.sendBang(patch.dollarZeroStr() + "-start-fromCpp");
 }
 
 
