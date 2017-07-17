@@ -69,6 +69,7 @@ and controls.
 4. You should now be able to start and stop the Agent's sound generation, modify the tempo and volume, and change the 
 agent's state
 
+* NOTE:  To see how agents communicate, notice that when you change the tempo on one agent, the other agents will follow.
 	
 ## Sound Design via PD
 
