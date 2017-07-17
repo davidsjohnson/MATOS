@@ -164,7 +164,7 @@ void Agent::start() {
     }
 
     srand(time(NULL));
-    int randTempo = rand() % 50 + 180;
+    int randTempo = rand() % 50 + 50;
     patch.sendStart(randTempo);
 
     bdi.start();

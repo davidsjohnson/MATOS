@@ -32,11 +32,43 @@ allows for robust and flexible sound design even for composers not familiar with
 	1. Edit `neighbors.txt` with the IP addresses and osc listening ports of other MATOS agents
 	2. `./MATO -i <agent id> -o <osc port> -p <PD patch location> -n <neighbors file> -s <number of states>`
 		* __agent id:__ any unique integer
-		* __osc port:__ port for application to listen for OSC messages (default = 7000)
+		* __osc port:__ port for MATOS to listen for OSC messages from agents (default = 7000)
+			* the OSC port sensor input is the agent port number + 1000 (default = 8000)
 		* __PD patch location:__ path to the PD patch for sound generation (default = pd/main.pd)
 		* __neighbors file:__ path to the file containing connection information for other MATOS agents
 		* __number of states:__ in the `states` folder
 		* __*Example:*__ `./MATO -i 0 -o 7000 -p ../pd/main.pd -n ../neighbors.txt -s 4`
+		
+## MATOS Demo Instruction
+The `demo` folder contains the necessary files for a demo of MATOS with 4 agents. After successfully building and 
+running MATOS on each computer 
+
+1. Browse to the `demo` folder
+2. Select one of the 4 demo folders and open the corresponding `pd` folder
+3. Copy the `samples` and `states` folders and `main.pd`
+4. Paste into the `pd` folder of the root `MATO` folder to replace the existing the existing files
+5. Now from the `pd` folder, copy both the `states` and `samples` folders
+6. Paste in the root `MATO` folder 
+	* (this is a workaround that I'm hoping to address in the future)
+7. Edit the `neighbors.txt` file to configure the agent with a list of neighbors
+	* Each line represents one neighbor agent.  
+		* The first entry in the file is the agent id
+		* The second entry is the agent host's IP address
+		* The third entry is the agent's OSC port for agent communication (will most likely be 7000 for all agents)
+8. Run MATOS on each computer from the `build` folder
+	* `./MATO -i 0 -o 7000 -p pd/main.pd -n ../neighbors.txt -s 4`
+	* make sure to change the agent ID for each agent (i.e. the `-i` parameter)
+	
+To test sensor input, I've also include a [TouchOSC](https://hexler.net/software/touchosc) patch to mimic various inputs.
+and controls.  
+
+1. Load the patch into TouchOSC - <https://hexler.net/docs/touchosc-configuration-layout-transfer-wifi>
+2. Configure TouchOSC with the IP address and Port of the agent you'd like to communicate with
+	* Remember the sensor input port is the port entered in the command line parameters + 1000 (so 8000 by default)
+3. Open the Patch
+4. You should now be able to start and stop the Agent's sound generation, modify the tempo and volume, and change the 
+agent's state
+
 	
 ## Sound Design via PD
 
@@ -89,9 +121,9 @@ for full details on adding new behaviors and goals
 Beliefs represent information about the world that the agent obtains through sensors and other agents. In MATOS, beliefs are 
 composed of an url styled ID indicating the Agent ID and Parameter Name, the parameter name, and a list of parameter values. 
 For example, a belief about agent #5’s tempo would be represented as: 
-- ID: 			/tempo/5 
-- parameterName: 	tempo 
-- parameterValues: 	[90]
+- **ID:**		/tempo/5 
+- **parameterName:**	tempo 
+- **parameterValues:** 	[90]
 
 The main Agent has a belief database that is a map of type `shared_ptr<map<string, shared_ptr<Belief>>>`
 
@@ -146,6 +178,9 @@ sensors and feature extraction are implemented independently of the Agent and up
 the OSC API for sensors.  Information from each sensor will update the belief database with the given parameter value. 
 For example, an OSC Message `/volume/1 90` indicates that the belief database should be updated with the volume for agent 1 to 
 a value of 90.
+
+Using OSC also affords the opportunity to use *[Wekinator](http://www.wekinator.org/)* for processing sensor data with machine 
+learning algorithms.
 
 OSC Callbacks are implemented in the Agent.cpp to indicate how certain input from a sensor should be processed.
 
