@@ -20,7 +20,7 @@ allows for robust and flexible sound design even for composers not familiar with
 
 ### Instructions
 1. Install above dependencies
-   * CMake currently assumes that dependencies are in `/usr/local/include` 
+   * CMake currently assumes that dependencies are in `/usr/local/include` and their libraries are in `/usr/local/lib`
    * Update CMakeLists.txt if installations are located elsewhere
 2. Clone MATOS repository from GitHub: 
    * `git clone https://github.com/fortjohnson/MATOS.git`
@@ -202,5 +202,3 @@ implementations or by adding a GUI.
 * Improve beat syncing between agents for better time alignment.
 * Improve the Sound design interface.  Given the right resources, it would be interesting to sync Ableton Live directly
 with the libPD and MATOS.
-
-
