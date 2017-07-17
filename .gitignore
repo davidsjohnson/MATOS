@@ -1,5 +1,6 @@
 cmake-build-debug/
 .idea/
-in_c/patch_editor_abs/
 pd/patch_editor_abs/
 docs/
+build/
+CMakeFiles/
