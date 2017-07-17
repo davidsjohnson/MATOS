@@ -197,8 +197,10 @@ OSC Callbacks are implemented in the Agent.cpp to indicate how agent input shoul
 
 
 ## Future Work
+* Simplify the MATOS BDI API.  Possibly by integrating a scripting language such as Python for all behavior, goal and action
+implementations or by adding a GUI.
+* Improve beat syncing between agents for better time alignment.
 * Improve the Sound design interface.  Given the right resources, it would be interesting to sync Ableton Live directly
 with the libPD and MATOS.
-* Simplify the MATOS BDI API.  Possibly by integrating a scripting language such as Python for all behavior, goal and action
-implementations.
+
 
