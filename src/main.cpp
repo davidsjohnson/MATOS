@@ -20,6 +20,7 @@ int main(int argc, char* argv[]) {
             ("o,oscport", "Port for OSC Messages", cxxopts::value<int>(defaultPort), "OSC Port")
             ("p,patchfile", "Path to Pure Data Patch", cxxopts::value<string>(defaultPatchFile), "PD Patch Location")
             ("n,neighborsfile", "Path to the neighbor file", cxxopts::value<string>(), "Neighbors File Location")
+            ("s,numberstates", "The number of states available for the patch", cxxopts::value<int>(), "Number of PD States")
             ;
 
     options.parse(argc, argv);
@@ -29,6 +30,7 @@ int main(int argc, char* argv[]) {
     int oscPort = options["o"].as<int>();
     string pdFile = options["p"].as<string>();
     string nbFile = options["n"].as<string>();
+    int n_states = options["s"].as<int>();
 
     // Loading neighbors file
     map<int, pair<string, int>> neighbors;
@@ -71,7 +73,7 @@ int main(int argc, char* argv[]) {
 
     // Starting Agent with Parameters from Command Line
     g_agentID = agentID;
-    Agent agent(agentID, neighbors, pdFile, oscPort);
+    Agent agent(agentID, neighbors, pdFile, oscPort, n_states);
     cout << "Started Agent:\n";
     cout << agent << endl;
     agent.start();

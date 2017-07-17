@@ -46,7 +46,7 @@ void PdPatch::init(Agent* agent) {
     }
 
     pd.computeAudio(true);
-    pd.addToSearchPath("../in_c/patch_editor_abs");
+    pd.addToSearchPath("../pd/patch_editor_abs");
 
     pd.setReceiver(&pdO);
     pdO.setAgent(agent);        // TODO: Try not to have to set agent here
@@ -96,7 +96,11 @@ void PdPatch::init(Agent* agent) {
 
     sendState(0);
     sendParameters("-volume-fromCpp", {40.0f});
-    sendParameters("-volume-fromCpp", {40.0f});
+}
+
+
+void PdPatch::sendStart(){
+    pd.sendBang(patch.dollarZeroStr() + "-start-fromCpp");
 }
 
 

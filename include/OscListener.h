@@ -41,7 +41,7 @@ public:
      * @param callback - the function to run if pattern is matched, should be of type:
      *      typedef std::function<void(const osc::ReceivedMessage& message)> callbackFunction;
      */
-    void onReceive(string addressPattern, callbackFunction callback);
+    void onReceive(string addressPattern, CallbackFunction callback);
 
 
     /**
@@ -52,7 +52,7 @@ public:
 private:
 
     int                           m_port;
-    map<string, callbackFunction> messages;
+    map<string, CallbackFunction> messages;
 
     thread t;
 

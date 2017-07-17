@@ -14,6 +14,6 @@ void AgentMonitor::start() {
 }
 
 
-void AgentMonitor::addFunction(string paramAddr, callbackFunction callback) {
+void AgentMonitor::addFunction(string paramAddr, CallbackFunction callback) {
     oscIn.onReceive(paramAddr, callback);
 }

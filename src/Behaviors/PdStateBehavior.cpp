@@ -9,7 +9,7 @@ extern int g_agentID;
 void PdStateBehavior::init(Beliefs &beliefs, AgentMonitor &oscMonitor) {
 
     // Initialize with OSC Input Function from Neighbors
-    callbackFunction stateIn = [&](const osc::ReceivedMessage& message) {
+    CallbackFunction stateIn = [&](const osc::ReceivedMessage& message) {
         osc::ReceivedMessageArgumentIterator arg = message.ArgumentsBegin();
         // Add (or update) a belief for Tempo message from a neighbor
         try{

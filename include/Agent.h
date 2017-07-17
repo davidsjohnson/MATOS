@@ -43,7 +43,7 @@ public:
      * @param pdFile - the location of the PD patch for sound generation
      * @param oscPort - the port to use for incoming OSC messages
      */
-    Agent(int agentID,  map<int, pair<string, int>> neighbors, const string& pdFile, const int& oscPort);
+    Agent(int agentID,  map<int, pair<string, int>> neighbors, const string& pdFile, const int& oscPort, const int num_states);
 
 
     /**
@@ -75,14 +75,15 @@ private:
 
     //Audio Objects
     PdPatch patch;
+    int     n_states;
 
     //Agent to Agent Communication Objects
     map<int, pair<string, int>>     neighbors;
     vector<shared_ptr<OscSender>>   oscOuts;
-    AgentMonitor                      oscMonitor;
+    AgentMonitor                    oscMonitor;
 
     // Senors
-    SensorMonitor                   proximityMonitor;
+    SensorMonitor                   sensorMonitor;
 
     // BDI objects
     Interpreter                     bdi;

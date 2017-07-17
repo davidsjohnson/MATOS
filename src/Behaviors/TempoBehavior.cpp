@@ -18,7 +18,7 @@ TempoBehavior::TempoBehavior(Goal g) : goal(g)
 void TempoBehavior::init(Beliefs& beliefs, AgentMonitor& oscMonitor){
 
     // Initialize with OSC Input Function from Neighbors
-    callbackFunction tempoIn = [&](const osc::ReceivedMessage& message) {
+    CallbackFunction tempoIn = [&](const osc::ReceivedMessage& message) {
         osc::ReceivedMessageArgumentIterator arg = message.ArgumentsBegin();
         // Add (or update) a belief for Tempo message from a neighbor
         try{
