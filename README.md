@@ -58,6 +58,8 @@ running MATOS on each computer
 8. Run MATOS on each computer from the `build` folder
 	* `./MATO -i 0 -o 7000 -p pd/main.pd -n ../neighbors.txt -s 4`
 	* make sure to change the agent ID for each agent (i.e. the `-i` parameter)
+	* For the Timeline (ie beat clock) to work the last agent started should be designated as the master using the `-m` switch
+		* `./MATO -i 0 -o 7000 -p pd/main.pd -n ../neighbors.txt -s 4 -m`
 	
 To test sensor input, I've also include a [TouchOSC](https://hexler.net/software/touchosc) patch to mimic various inputs.
 and controls.  
@@ -111,6 +113,14 @@ An agent in MATOS encapsulates all components necessary for agent understanding 
 agents, and sound generation. Most of the development of a new Agent happens in the Agent's `init()` method.  Here you can register
 BDI components (see below), add new sensor and agent communication monitors.  See Agent.cpp for a demo implementation that handles 
 sensor and agent communication, sound generation and BDI processing.
+
+### Timeline
+Currently, beat alignment is handled by a single agent that sends out tick messages to all neighboring agents.  Given a specified 
+tempo, the Timeline sends out 4 ticks per beat.  Each tick triggers the PD patch to play the next beat in the sequencer.  The
+Timeline also performs a simple latency calculation before starting to estimate the latency of messages to each neighbor.  Ticks
+are sent in order of latency to ensure ticks are received at all agents at approximately the same time.  
+
+NOTE: The Timeline is being designed to allow for decentralization in a future iteration.  
 
 
 ## Behavior, Desires and Intentions (BDI) Framework
@@ -187,7 +197,7 @@ OSC Callbacks are implemented in the Agent.cpp to indicate how certain input fro
 
 ### Agent Communication
 
-Agent Communication is also perform through OSC. Each agent is started with a list of *neighbors* that includes the IP Address and the 
+Agent Communication is also performed through OSC. Each agent is started with a list of *neighbors* that includes the IP Address and the 
 OSC port of all neighbors (see the `neighbors.txt` file for an example).  Anytime an agent’s state is changed, the agent sends a 
 message with the parameterName and parameterValue to all registered neighbors.  The receiving agents then update their belief 
 database based on the incoming messages.  Using OSC allows each agent to independently decide what to do with incoming messages.
@@ -200,6 +210,6 @@ OSC Callbacks are implemented in the Agent.cpp to indicate how agent input shoul
 ## Future Work
 * Simplify the MATOS BDI API.  Possibly by integrating a scripting language such as Python for all behavior, goal and action
 implementations or by adding a GUI.
-* Improve beat syncing between agents for better time alignment.
+* Decentralize the timeline (ie the beat clock)
 * Improve the Sound design interface.  Given the right resources, it would be interesting to sync Ableton Live directly
 with the libPD and MATOS.

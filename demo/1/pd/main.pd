@@ -1,4 +1,4 @@
-#N canvas 0 23 1440 855 10;
+#N canvas 0 22 1440 799 10;
 #X declare -path patch_editor_abs;
 #X obj 7 692 declare -path patch_editor_abs;
 #N canvas 392 117 718 398 patch-editor-do-not-delete 0;
@@ -3652,7 +3652,7 @@ more elaborate pd-code for deeper control.;
 #X obj 204 151 r open-organelle-map!;
 #X msg 204 198 \; pd-organelle-map vis \$1;
 #X obj 203 272 r open-modules!;
-#N canvas 798 70 618 657 modules 1;
+#N canvas 798 70 618 657 modules 0;
 #X obj 203 81 cnv 15 180 15 empty empty MODULATION: 10 8 0 12 -158136
 -262144 0;
 #X obj 203 102 bng 15 250 50 0 \$0-create-basic-lfo! empty <--BASIC-LFO
@@ -4766,7 +4766,7 @@ for more details.;
 #X connect 0 0 4 0;
 #X connect 2 0 3 0;
 #X connect 3 0 1 0;
-#X restore 769 85 pd start;
+#X restore 613 85 pd start;
 #N canvas 895 207 208 154 tempo 0;
 #X obj 18 92 outlet;
 #X obj 18 22 r \$0-tempo-fromCpp;
@@ -5574,7 +5574,7 @@ Pitch -2 -8 0 10 -262144 -1 -1 3300 1;
 #X restore 23 617 pd loadsamples;
 #X obj 431 584 r \$0-sample1name-r;
 #X obj 619 554 r \$0-sample2name-r;
-#N canvas 573 214 455 309 sequencer 1;
+#N canvas 573 214 455 309 sequencer 0;
 #X obj 25 22 inlet;
 #X obj 267 7 inlet;
 #X floatatom 242 130 5 0 0 0 - - -;
@@ -6837,6 +6837,7 @@ Pitch -2 -8 0 10 -262144 -1 -1 3300 1;
 #X connect 7 0 5 0;
 #X connect 7 0 6 0;
 #X connect 24 0 7 1;
+#X connect 25 0 7 0;
 #X connect 26 0 31 0;
 #X connect 27 0 26 0;
 #X connect 27 1 26 1;
@@ -7058,7 +7059,7 @@ Pitch -2 -8 0 10 -262144 -1 -1 3300 1;
 #X obj 153 90 spigot;
 #X obj 92 35 r \$0-value;
 #X obj 188 42 r \$0-index;
-#X obj 91 142 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+#X obj 91 142 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
 #X obj 153 118 s \$0-beat2-2;
 #X obj 188 64 == 9;
@@ -7211,7 +7212,7 @@ Pitch -2 -8 0 10 -262144 -1 -1 3300 1;
 #X obj 153 90 spigot;
 #X obj 92 35 r \$0-value;
 #X obj 188 42 r \$0-index;
-#X obj 70 132 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+#X obj 70 132 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
 #X obj 153 118 s \$0-beat5-3;
 #X obj 166 72 == 22;
@@ -7258,7 +7259,7 @@ Pitch -2 -8 0 10 -262144 -1 -1 3300 1;
 #X obj 153 90 spigot;
 #X obj 92 35 r \$0-value;
 #X obj 188 42 r \$0-index;
-#X obj 91 142 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+#X obj 91 142 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
 #X obj 153 118 s \$0-beat6-2;
 #X obj 188 64 == 25;
@@ -7308,7 +7309,7 @@ Pitch -2 -8 0 10 -262144 -1 -1 3300 1;
 #X obj 153 90 spigot;
 #X obj 92 35 r \$0-value;
 #X obj 188 42 r \$0-index;
-#X obj 70 132 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+#X obj 70 132 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
 #X obj 153 118 s \$0-beat7-3;
 #X obj 166 72 == 30;
@@ -7510,7 +7511,7 @@ Pitch -2 -8 0 10 -262144 -1 -1 3300 1;
 #X obj 153 90 spigot;
 #X obj 92 35 r \$0-value;
 #X obj 188 42 r \$0-index;
-#X obj 91 142 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+#X obj 91 142 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
 #X obj 188 64 == 41;
 #X obj 153 118 s \$0-beat10-2;
@@ -7638,7 +7639,7 @@ Pitch -2 -8 0 10 -262144 -1 -1 3300 1;
 #X obj 153 90 spigot;
 #X obj 92 35 r \$0-value;
 #X obj 188 42 r \$0-index;
-#X obj 70 132 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+#X obj 70 132 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
 #X obj 166 72 == 54;
 #X obj 153 118 s \$0-beat13-3;
@@ -7666,7 +7667,7 @@ Pitch -2 -8 0 10 -262144 -1 -1 3300 1;
 #X obj 153 90 spigot;
 #X obj 92 35 r \$0-value;
 #X obj 188 42 r \$0-index;
-#X obj 91 142 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+#X obj 91 142 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
 #X obj 188 64 == 57;
 #X obj 153 118 s \$0-beat14-2;
@@ -7716,7 +7717,7 @@ Pitch -2 -8 0 10 -262144 -1 -1 3300 1;
 #X obj 153 90 spigot;
 #X obj 92 35 r \$0-value;
 #X obj 188 42 r \$0-index;
-#X obj 70 132 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+#X obj 70 132 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
 #X obj 166 72 == 62;
 #X obj 153 118 s \$0-beat15-3;
@@ -7743,7 +7744,7 @@ Pitch -2 -8 0 10 -262144 -1 -1 3300 1;
 #X obj 253 55 metro 5;
 #X obj 63 146 r \$0-seq-idx;
 #X floatatom 63 164 5 0 0 0 - - -;
-#X obj 192 21 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 192 21 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 1;
 #X obj 159 41 spigot;
 #X obj 158 15 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
@@ -7790,9 +7791,8 @@ Pitch -2 -8 0 10 -262144 -1 -1 3300 1;
 #X msg 55 406 samples/shaker.wav;
 #X msg 55 331 samples/hihat.wav;
 #X connect 11 0 15 0;
-#X connect 12 0 106 0;
 #X connect 13 0 121 0;
-#X connect 14 0 12 0;
+#X connect 14 0 106 0;
 #X connect 17 0 9 0;
 #X connect 18 0 9 2;
 #X connect 19 0 9 4;
