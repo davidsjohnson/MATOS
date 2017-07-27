@@ -13,6 +13,10 @@ void AgentMonitor::start() {
     oscIn.start();
 }
 
+void AgentMonitor::stop(){
+    oscIn.stop();
+}
+
 
 void AgentMonitor::addFunction(string paramAddr, CallbackFunction callback) {
     oscIn.onReceive(paramAddr, callback);

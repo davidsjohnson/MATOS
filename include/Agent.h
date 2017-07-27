@@ -17,7 +17,7 @@
 #include "TempoBehavior.h"
 #include "PdStateBehavior.h"
 #include "SensorMonitor.h"
-
+#include "Timeline.h"
 
 /**
  * Agent is the main class that encapsulates all components of the BDI agent. An agent
@@ -43,13 +43,16 @@ public:
      * @param pdFile - the location of the PD patch for sound generation
      * @param oscPort - the port to use for incoming OSC messages
      */
-    Agent(int agentID,  map<int, pair<string, int>> neighbors, const string& pdFile, const int& oscPort, const int num_states);
+    Agent(int agentID,  map<int, pair<string, int>> neighbors, const string& pdFile, bool master, int oscPort, const int num_states);
+    ~Agent();
 
 
     /**
      * Starts all components of the Agent, including the interpreter, the PD Patch and the OSC server
      */
     void    start();
+
+    void    stop();
 
 
     /**
@@ -66,21 +69,25 @@ public:
      */
     int     getAgentID(){return id;}
 
+    bool    isMaster();
+
 private:
 
-    // Agent Infosd
+    // Agent Info
     int                 id;
     int                 oscPort;
     string              patchFile;
+    bool                master;
 
     //Audio Objects
     PdPatch patch;
     int     n_states;
+    Timeline timeline;
 
     //Agent to Agent Communication Objects
     map<int, pair<string, int>>     neighbors;
     vector<shared_ptr<OscSender>>   oscOuts;
-    AgentMonitor                    oscMonitor;
+    shared_ptr<AgentMonitor>        agentMonitor;
 
     // Senors
     SensorMonitor                   sensorMonitor;

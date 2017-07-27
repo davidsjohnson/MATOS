@@ -35,6 +35,7 @@ public:
     string      dollarZeroStr();
 
     void        init(Agent* agent);
+    void        closePatch();
 
 private:
 

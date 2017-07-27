@@ -23,7 +23,7 @@ public:
      * @param beliefs - reference to the agents belief database
      * @param agentMonitor - the monitor that is listening for state changes
      */
-    void init(Beliefs &beliefs, AgentMonitor &oscMonitor) override;
+    void init(Beliefs beliefs, shared_ptr<AgentMonitor> oscMonitor) override;
 
 
     /**
@@ -32,7 +32,7 @@ public:
      * @param beliefs - the set of current Agent Beliefs
      * @param blfParams - map containing parameters required for all goals
      */
-    void processBeliefs(const Beliefs beliefs, map<string, float> &blfParams) override;
+    void processBeliefs(Beliefs beliefs, map<string, float> &blfParams) override;
 
 
 
@@ -47,6 +47,7 @@ public:
 private:
 
     Goal goal;
+    shared_ptr<map<string, shared_ptr<Belief>>> m_beliefs;
 
 };
 

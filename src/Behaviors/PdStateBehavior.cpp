@@ -2,32 +2,35 @@
 // Created by David Johnson on 4/26/17.
 //
 
+#include <Belief.h>
 #include "PdStateBehavior.h"
 
 extern int g_agentID;
 
-void PdStateBehavior::init(Beliefs &beliefs, AgentMonitor &oscMonitor) {
+void PdStateBehavior::init(Beliefs beliefs, shared_ptr<AgentMonitor> oscMonitor) {
+
+    m_beliefs = beliefs;
 
     // Initialize with OSC Input Function from Neighbors
     CallbackFunction stateIn = [&](const osc::ReceivedMessage& message) {
         osc::ReceivedMessageArgumentIterator arg = message.ArgumentsBegin();
         // Add (or update) a belief for Tempo message from a neighbor
         try{
-            float tempo = arg->AsFloat();  // only one argument in a tempo message (if there are more they will get ignored)
-            (*beliefs)[message.AddressPattern()] = make_shared<Belief>("state", tempo);
+            float state = arg->AsFloat();  // only one argument in a tempo message (if there are more they will get ignored)
+            (*m_beliefs)[message.AddressPattern()] = make_shared<Belief>("state", state);
         }
-        catch(exception e){
+        catch(const exception& e){
             cout << "Error Adding State Belief: " << e.what() << endl;
         }
     };
-    oscMonitor.addFunction("/state/.*", stateIn);
+    oscMonitor->addFunction("/state/.*", stateIn);
 }
 
-void PdStateBehavior::processBeliefs(const Beliefs beliefs, map<string, float> &blfParams) {
+void PdStateBehavior::processBeliefs(Beliefs beliefs, map<string, float> &blfParams) {
 
     vector<float> pdStates;
 
-    for (auto beliefPair : *beliefs) {
+    for (auto beliefPair : *m_beliefs) {
         Belief b = *beliefPair.second;
 
         if (b.paramName == "state") {

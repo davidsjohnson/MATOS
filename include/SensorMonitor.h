@@ -31,6 +31,10 @@ public:
         oscIn.start();
     }
 
+    virtual void stop(){
+        oscIn.stop();
+    }
+
 
     /**
      * Registers a callback function to the given address pattern
@@ -43,6 +47,8 @@ public:
     virtual void addFunction(string name, CallbackFunction func){
         oscIn.onReceive(name, func);
     }
+
+
 
 
 private:
