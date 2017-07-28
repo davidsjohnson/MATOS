@@ -15,7 +15,7 @@ class PdStateBehavior : public Behavior {
 
 public:
 
-    PdStateBehavior(Goal g) : goal(g){}
+    explicit PdStateBehavior(Goal g);
 
     /**
      * Initializes the behavior to handle OSC Input from neighbors
@@ -46,8 +46,8 @@ public:
 
 private:
 
-    Goal goal;
-    shared_ptr<map<string, shared_ptr<Belief>>> m_beliefs;
+    Goal    goal;
+    Beliefs m_beliefs;
 
 };
 

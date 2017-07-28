@@ -7,6 +7,10 @@
 
 extern int g_agentID;
 
+
+PdStateBehavior::PdStateBehavior(Goal g) : goal(g) {}
+
+
 void PdStateBehavior::init(Beliefs beliefs, shared_ptr<AgentMonitor> oscMonitor) {
 
     m_beliefs = beliefs;
@@ -25,6 +29,7 @@ void PdStateBehavior::init(Beliefs beliefs, shared_ptr<AgentMonitor> oscMonitor)
     };
     oscMonitor->addFunction("/state/.*", stateIn);
 }
+
 
 void PdStateBehavior::processBeliefs(Beliefs beliefs, map<string, float> &blfParams) {
 
@@ -64,7 +69,6 @@ void PdStateBehavior::processBeliefs(Beliefs beliefs, map<string, float> &blfPar
     blfParams["rand(40, 65)"] = randRange(25, 45);
 
 }
-
 
 
 void PdStateBehavior::generateAction(map<string, float> &blfParams, vector<pair<bool, Goal> > &actionGoals) {

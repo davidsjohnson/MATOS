@@ -19,7 +19,7 @@
 class TempoBehavior : public Behavior{
 
 public:
-    TempoBehavior(Goal g);
+    explicit TempoBehavior(Goal g);
 
 
     /**
@@ -49,8 +49,8 @@ public:
     void generateAction(map<string, float>& blfParams, vector<pair<bool, Goal>>& actionGoals) override;
 
 private:
-    Goal goal;
-    shared_ptr<map<string, shared_ptr<Belief>>> m_beliefs;
+    Goal    goal;
+    Beliefs m_beliefs;
 
 };
 
