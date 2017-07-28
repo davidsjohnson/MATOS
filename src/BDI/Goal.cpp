@@ -4,11 +4,11 @@
 
 #include "Goal.h"
 
-bool is_operator(string token){
+bool is_operator(const string& token){
     return token == "~=" || token == "<" || token == ">" || token == "==" || token == "!=" || token == ">=" || token == "<=" || token == "and" || token == "or" || token == "+" || token == "*" || token == "/" || token == "-";
 }
 
-int precedence(string token){
+int precedence(const string& token){
 
     if (token == "*" || token == "/") return 3;
     if (token == "+" || token == "-") return 2;
@@ -47,11 +47,11 @@ bool evaluateCondition(int operand1, int operand2, string op){
 
 
 Goal::Goal(ActionFunction callback) :
-    callback(callback), outputQueue()
+    callback(callback)
 {}
 
 Goal::Goal(vector<string> infixExpression, ActionFunction callback) :
-    callback(callback), outputQueue()
+    callback(callback)
 {
     setExpression(infixExpression);
 }
@@ -61,7 +61,7 @@ void Goal::setExpression(vector<string> infixExpression) {
 
     stack<string> operatorStack;
 
-    for (string token : infixExpression){
+    for (const string& token : infixExpression){
         // Check of operator is an operator
         if (is_operator(token)) {
 
@@ -115,31 +115,31 @@ bool Goal::evaluate(map<string, float>& params){
 
 
             try {
-                o1 = params.at(operand1);
+                o1 = int(params.at(operand1));
             }
             catch(exception e){
                 try {
                     o1 = stoi(operand1);
                 }
-                catch(exception e){
+                catch(const exception& e){
                     if(operand1 == "true")          o1 = true;
                     else if(operand1 == "false")    o1 = false;
                     else {
                         stringstream error;
                         error << "Missing Parameter: " << operand1;
-                        throw MissingParameterException(error.str().c_str());  //TODO:: Handle Missing Parameter Exception
+                        throw MissingParameterException(error.str().c_str());
                     }
                 }
             }
 
             try {
-                o2 = params.at(operand2);
+                o2 = int(params.at(operand2));
             }
-            catch(exception e){
+            catch(const exception& e){
                 try {
                     o2 = stoi(operand2);
                 }
-                catch(exception e){
+                catch(const exception& e){
                     if(operand2 == "true")          o2 = true;
                     else if(operand2 == "false")    o2 = false;
                     else{
@@ -167,8 +167,10 @@ bool Goal::evaluate(map<string, float>& params){
 
     string result = evalStack.top();
 
-    if(result == "true")    return true;
-    else                    return false;
+    if(result == "true")
+        return true;
+
+    return false;
 
 }
 
@@ -179,7 +181,7 @@ void Goal::action(map<string,float>& params) {
 
 ostream&operator<<(ostream& os, const Goal& goal){
 
-    for (string token : goal.outputQueue){
+    for (const string& token : goal.outputQueue){
         os << token << " " ;
     }
     return os;

@@ -11,6 +11,10 @@
 #include "Belief.h"
 #include "AgentMonitor.h"
 
+class Behavior;
+
+typedef vector<shared_ptr<Behavior>> Behaviors;
+
 /**
  * Interface for BDI behaviors.  Behaviors represent what action an
  * agent should perform for a specified belief (or set of beliefs).  All
@@ -44,7 +48,7 @@ public:
      * @param blfParams - map of generated parameter values
      * @param actions - a list of actions to perform and if they are required or not
      */
-    virtual void generateAction( map<string, float>& blfParams, vector< pair<bool, Goal> >& actionGoals) = 0;
+    virtual void generateAction(map<string, float>& blfParams, vector< pair<bool, Goal> >& actionGoals) = 0;
 };
 
 

@@ -26,6 +26,10 @@ public:
      * Starts the monitor
      */
     virtual void start();
+
+    /**
+    * Stops the monitor
+    */
     virtual void stop();
 
 

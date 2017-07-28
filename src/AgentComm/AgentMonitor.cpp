@@ -4,14 +4,15 @@
 
 #include "AgentMonitor.h"
 
+
 AgentMonitor::AgentMonitor(int oscPort) : oscIn(oscPort)
-{
-}
+{}
 
 
 void AgentMonitor::start() {
     oscIn.start();
 }
+
 
 void AgentMonitor::stop(){
     oscIn.stop();

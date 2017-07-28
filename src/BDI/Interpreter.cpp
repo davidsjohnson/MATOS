@@ -72,16 +72,20 @@ void Interpreter::start(){
 
 
 void Interpreter::stop() {
+
     running = false;
-    if (bdi.joinable()) bdi.join();
     lk.unlock();
     cv.notify_all();
+    if (bdi.joinable()) bdi.join();
+    lk2.unlock();
+    cv2.notify_all();
     if (t_printBeliefs.joinable()) t_printBeliefs.join();
+    cout << "BDI Interpreter Stopped" << endl;
 }
 
 
 Interpreter::~Interpreter() {
-    stop();
+//    stop();
 }
 
 
@@ -111,6 +115,6 @@ void Interpreter::printBeliefs() {
             cout << "\t" << bPair.first << ": " << *bPair.second << endl;
         }
         cout << endl;
-        cv.wait_for(lk, 30000ms, [&](){return !running;});
+        cv2.wait_for(lk2, 30000ms, [&](){return !running;});
     }
 }

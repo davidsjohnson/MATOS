@@ -21,11 +21,11 @@ typedef shared_ptr<map<string, shared_ptr<Belief>>> Beliefs;
 class Belief{
 
 public:
-    Belief() : paramName(0), value(0){};
-    Belief(string name, float value) : paramName(name), value(value) {};
 
-    string  paramName;
-    float   value;
+    Belief(string name, float value) : paramName(std::move(name)), value(value) {};
+
+    const string    paramName;
+    float           value;
 
     friend ostream& operator<<(ostream& os, const Belief& belief);
 };

@@ -44,7 +44,7 @@ TEST_CASE( "Latency Sync Check", "[sync][timeline]" ) {
     REQUIRE(agent0->isMaster());
     REQUIRE(!agent1->isMaster());
 
-    sleep(100);
+    sleep(2);
 
     agent0->stop();
     agent1->stop();

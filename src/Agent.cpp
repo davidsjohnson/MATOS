@@ -5,7 +5,7 @@
 #include "Agent.h"
 
 Agent::Agent(int agentID,  map<int, pair<string, int>> neighbors, const string& pdFile, bool master, int oscPort, const int num_states) :
-        id(agentID), oscPort(oscPort), patchFile(pdFile), master(master),
+        id(agentID), oscPort(oscPort), patchFile(pdFile),
         neighbors(neighbors), patch(pdFile), n_states(num_states),
         goals(make_shared<vector<Goal, allocator<Goal>>>()),
         agentMonitor(make_shared<AgentMonitor>(oscPort)), sensorMonitor(oscPort+1000),
@@ -25,7 +25,6 @@ Agent::Agent(int agentID,  map<int, pair<string, int>> neighbors, const string& 
 
         timeline.addNeighbor(n.first, o);
     }
-
 
     // ###### Tempo Goal and Behavior
     ActionFunction tempoAction;
@@ -162,7 +161,7 @@ Agent::Agent(int agentID,  map<int, pair<string, int>> neighbors, const string& 
 }
 
 Agent::~Agent() {
-    stop();
+//    stop();
 }
 
 
@@ -234,5 +233,5 @@ ostream& operator<<(ostream& os, const Agent& agent){
 }
 
 bool Agent::isMaster() {
-    return master;
+    return timeline.isMaster();
 }

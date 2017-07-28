@@ -166,6 +166,7 @@ void Timeline::stop() {
     if (t_ticks.joinable()) t_ticks.join();
     lk.unlock();
     cv.notify_all();
+    cout << "Timeline Stopped" << endl;
 }
 
 

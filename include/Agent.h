@@ -44,6 +44,11 @@ public:
      * @param oscPort - the port to use for incoming OSC messages
      */
     Agent(int agentID,  map<int, pair<string, int>> neighbors, const string& pdFile, bool master, int oscPort, const int num_states);
+
+
+    /**
+    * Stops all components of the Agent, including the interpreter, the PD Patch and the OSC server
+    */
     ~Agent();
 
 
@@ -52,6 +57,10 @@ public:
      */
     void    start();
 
+
+    /**
+    * Stops all components of the Agent, including the interpreter, the PD Patch and the OSC server
+    */
     void    stop();
 
 
@@ -69,6 +78,11 @@ public:
      */
     int     getAgentID(){return id;}
 
+
+    /**
+     *
+     * @return is the agent a master or not
+     */
     bool    isMaster();
 
 private:
@@ -77,26 +91,25 @@ private:
     int                 id;
     int                 oscPort;
     string              patchFile;
-    bool                master;
 
     //Audio Objects
-    PdPatch patch;
-    int     n_states;
-    Timeline timeline;
+    PdPatch     patch;
+    int         n_states;
+    Timeline    timeline;
 
     //Agent to Agent Communication Objects
     map<int, pair<string, int>>     neighbors;
     vector<shared_ptr<OscSender>>   oscOuts;
     shared_ptr<AgentMonitor>        agentMonitor;
 
-    // Senors
+    // Senor Input
     SensorMonitor                   sensorMonitor;
 
-    // BDI objects
-    Interpreter                     bdi;
-    Goals                           goals;
-    Beliefs                         beliefs;
-    vector<shared_ptr<Behavior>>    behaviors;
+    // BDI objects and databases
+    Interpreter bdi;
+    Goals       goals;
+    Beliefs     beliefs;
+    Behaviors   behaviors;
 
 
     /**

@@ -13,13 +13,19 @@ class Goal;
  * The database of all agent goals
  */
 typedef shared_ptr<vector<Goal, allocator<Goal>>> Goals;
+
+/**
+ * Callback function type for a goal's corresponding action
+ */
 typedef function<void(bool result, const Goal& g, map<string, float>& params)> ActionFunction;
+
 
 class MissingParameterException : public runtime_error{
 public:
-    MissingParameterException(const char* message) : runtime_error(message){};
+    explicit MissingParameterException(const char* message) : runtime_error(message){};
 
 };
+
 
 /**
  * A goal represents an objective that an agent tries to meet and
@@ -29,7 +35,7 @@ public:
 class Goal {
 
 public:
-    Goal(ActionFunction callback);          // TODO: Is this needed?  Why a goal without an expression?
+    explicit Goal(ActionFunction callback);
     Goal(vector<string> infixExpression, ActionFunction callback);
 
     /**
@@ -61,9 +67,6 @@ public:
      * @return - the goal's callback function
      */
     ActionFunction getAction() {return callback;}
-
-    string  name;
-
 
 private:
 

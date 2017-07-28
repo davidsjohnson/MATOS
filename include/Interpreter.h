@@ -29,7 +29,7 @@ class Interpreter {
 
 public:
     Interpreter() : m_behaviors(), m_beliefs(), m_goals(), running(false),
-                    cv(), cv_m(), lk(cv_m)
+                    cv(), cv2(), cv_m(), cv_m2(), lk(cv_m), lk2(cv_m2)
                     {}
     ~Interpreter();
 
@@ -74,8 +74,11 @@ private:
     bool                running;
 
     condition_variable cv;
+    condition_variable cv2;
     mutex cv_m;
+    mutex cv_m2;
     std::unique_lock<std::mutex> lk;
+    std::unique_lock<std::mutex> lk2;
 
     void update();
     void run();

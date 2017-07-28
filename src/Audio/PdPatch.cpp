@@ -100,6 +100,7 @@ void PdPatch::init(Agent* agent) {
 
 void PdPatch::closePatch(){
     pd.closePatch(patch);
+    cout << "PD Patch Closed" << endl;
 }
 
 
