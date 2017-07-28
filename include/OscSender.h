@@ -22,7 +22,7 @@ public:
      * Sets up the
      */
     OscSender(int port=7000, string  ipAddress="127.0.0.1") :
-            m_transmitSocket( IpEndpointName(ipAddress.c_str(), port) )
+            m_transmitSocket( IpEndpointName(ipAddress.c_str(), port) ), m_port(port), m_ip(ipAddress)
     {
        cout << "OSC Sender to: " << ipAddress << " port: " << port << endl;
     }
@@ -51,6 +51,8 @@ public:
 
 private:
     UdpTransmitSocket m_transmitSocket;
+    int m_port;
+    string m_ip;
 
     void buildPacket(osc::OutboundPacketStream &p){}
 

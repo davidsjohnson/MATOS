@@ -5,6 +5,7 @@
 #ifndef MATO_BDI_INTERPRETER_H
 #define MATO_BDI_INTERPRETER_H
 
+#include <condition_variable>
 #include "Belief.h"
 #include "Goal.h"
 #include "Behavior.h"
@@ -27,7 +28,9 @@
 class Interpreter {
 
 public:
-    Interpreter() : m_behaviors(), m_beliefs(), m_goals() {}
+    Interpreter() : m_behaviors(), m_beliefs(), m_goals(), running(false),
+                    cv(), cv_m(), lk(cv_m)
+                    {}
     ~Interpreter();
 
     /**
@@ -36,11 +39,14 @@ public:
     void start();
 
 
+    void stop();
+
+
     /**
      * registers the agent's belief database
      * @param beliefs - the agent's belief database
      */
-    void setBeliefs(Beliefs beliefs);
+    void setBeliefs(shared_ptr<map<string, shared_ptr<Belief>>> beliefs);
 
 
     /**
@@ -59,12 +65,17 @@ public:
 private:
 
     vector<shared_ptr<Behavior>>    m_behaviors;
-    Beliefs             m_beliefs;
+    shared_ptr<map<string, shared_ptr<Belief>>>             m_beliefs;
     Goals               m_goals;
     map<string, float>  m_blfParams;
 
     thread              bdi;
     thread              t_printBeliefs;
+    bool                running;
+
+    condition_variable cv;
+    mutex cv_m;
+    std::unique_lock<std::mutex> lk;
 
     void update();
     void run();

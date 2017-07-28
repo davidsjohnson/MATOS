@@ -26,7 +26,7 @@ public:
      * @param beliefs - reference to the agents belief database
      * @param agentMonitor - the monitor that is listening for state changes
      */
-    virtual void init(Beliefs& beliefs, AgentMonitor& agentMonitor) = 0;
+    virtual void init(Beliefs beliefs, shared_ptr<AgentMonitor> agentMonitor) = 0;
 
     /**
      * processBeliefs should add the required parameters for the corresponding
@@ -35,7 +35,7 @@ public:
      * @param beliefs - the set of current Agent Beliefs
      * @param blfParams - map containing parameters required for all goals
      */
-    virtual void processBeliefs(const Beliefs beliefs, map<string, float>& blfParams) = 0;
+    virtual void processBeliefs(Beliefs beliefs, map<string, float> &blfParams) = 0;
 
 
     /**

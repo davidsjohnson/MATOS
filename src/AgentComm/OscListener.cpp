@@ -48,9 +48,19 @@ OscListener::~OscListener() {
 }
 
 void OscListener::start(){
-    shared_ptr<UdpListeningReceiveSocket> socket = make_shared<UdpListeningReceiveSocket>(IpEndpointName(IpEndpointName::ANY_ADDRESS, m_port), this);
-    t = thread(&OscListener::run, this, socket);
+    cout << "OSC Listening on " << m_port << endl;
+
+    m_socket = make_shared<UdpListeningReceiveSocket>(IpEndpointName(IpEndpointName::ANY_ADDRESS, m_port), this);
+    t = thread(&OscListener::run, this, m_socket);
 }
+
+
+void OscListener::stop(){
+    m_socket->AsynchronousBreak();
+    if (t.joinable()) t.join();
+    cout << "OSC Listener Stopped" << endl;
+}
+
 
 void OscListener::run(shared_ptr<UdpListeningReceiveSocket> socket) {
     socket->Run();
@@ -65,20 +75,25 @@ void OscListener::ProcessMessage(const osc::ReceivedMessage& m, const IpEndpoint
 
     (void) endpoint;  //suppress unused warnings
 
-    for (auto callbackPair : messages){
+    try {
+        for (auto callbackPair : messages) {
 
-        string address = callbackPair.first;
-        regex r(address);
+            string address = callbackPair.first;
+            regex r(address);
 
-        if (regex_match(m.AddressPattern(), r)) {
-            CallbackFunction callback = callbackPair.second;
+            if (regex_match(m.AddressPattern(), r)) {
+                CallbackFunction callback = callbackPair.second;
 
-            try {
-                callback(m);
-            }
-            catch(const exception& e){
-                cerr << "Error in Callback Function: " << callbackPair.first << " " << e.what() << endl;
+                try {
+                    callback(m);
+                }
+                catch (const exception &e) {
+                    cerr << "Error in Callback Function: " << callbackPair.first << " " << e.what() << endl;
+                }
             }
         }
+    }
+    catch(const exception &e){
+        cerr << "Error in processing message " << e.what() << endl;
     }
 }

@@ -1,4 +1,4 @@
-#N canvas 0 23 1440 855 10;
+#N canvas 0 22 1440 799 10;
 #X declare -path patch_editor_abs;
 #X obj 7 692 declare -path patch_editor_abs;
 #N canvas 392 117 718 398 patch-editor-do-not-delete 0;
@@ -4766,7 +4766,7 @@ for more details.;
 #X connect 0 0 4 0;
 #X connect 2 0 3 0;
 #X connect 3 0 1 0;
-#X restore 769 85 pd start;
+#X restore 622 85 pd start;
 #N canvas 895 207 208 154 tempo 0;
 #X obj 18 92 outlet;
 #X obj 18 22 r \$0-tempo-fromCpp;
@@ -5578,7 +5578,7 @@ Pitch -2 -8 0 10 -262144 -1 -1 5600 1;
 #X obj 25 22 inlet;
 #X obj 267 7 inlet;
 #X floatatom 242 130 5 0 0 0 - - -;
-#X obj 25 54 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1 1
+#X obj 25 54 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0 1
 ;
 #X obj 104 107 + 1;
 #X obj 32 165 select 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15;
@@ -6810,6 +6810,7 @@ Pitch -2 -8 0 10 -262144 -1 -1 5600 1;
 #X restore 371 103 pd colors;
 #X obj 152 140 s \$0-seq-idx;
 #X obj 258 107 / 4;
+#X obj 9 89 r \$0-tick;
 #X connect 0 0 3 0;
 #X connect 1 0 28 0;
 #X connect 2 0 25 1;
@@ -6842,6 +6843,7 @@ Pitch -2 -8 0 10 -262144 -1 -1 5600 1;
 #X connect 27 1 26 1;
 #X connect 28 0 27 0;
 #X connect 31 0 2 0;
+#X connect 32 0 7 0;
 #X restore 769 122 pd sequencer;
 #X obj 380 532 r \$0-sample1play-r;
 #X obj 568 507 r \$0-sample2play-r;
@@ -6851,7 +6853,7 @@ Pitch -2 -8 0 10 -262144 -1 -1 5600 1;
 #X obj 942 507 r \$0-sample4play-r;
 #X obj 377 198 bng 15 250 50 0 \$0-sample1play-r empty empty 17 7 0
 10 -262144 -1 -1;
-#X obj 769 104 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+#X obj 769 104 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
 #X obj 374 277 bng 15 250 50 0 \$0-sample2play-r empty empty 17 7 0
 10 -262144 -1 -1;
@@ -7040,8 +7042,8 @@ Pitch -2 -8 0 10 -262144 -1 -1 5600 1;
 #X restore 240 263 pd beat1-4;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array \$0-sequence-load 64 float 3;
-#A 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0;
+#A 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0;
 #X coords 0 1.5 64 -0.5 200 140 1 0 0;
 #X restore 432 38 graph;
 #N canvas 1958 578 450 300 beat2-1 0;
@@ -7744,7 +7746,7 @@ Pitch -2 -8 0 10 -262144 -1 -1 5600 1;
 #X obj 253 55 metro 5;
 #X obj 63 146 r \$0-seq-idx;
 #X floatatom 63 164 5 0 0 0 - - -;
-#X obj 192 21 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 192 21 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 1;
 #X obj 159 41 spigot;
 #X obj 158 15 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
@@ -7789,9 +7791,8 @@ Pitch -2 -8 0 10 -262144 -1 -1 5600 1;
 #X msg 55 406 samples/snare.wav;
 #X msg 59 171 samples/duetta1.wav;
 #X connect 11 0 15 0;
-#X connect 12 0 106 0;
 #X connect 13 0 121 0;
-#X connect 14 0 12 0;
+#X connect 14 0 106 0;
 #X connect 17 0 9 0;
 #X connect 18 0 9 2;
 #X connect 19 0 9 4;

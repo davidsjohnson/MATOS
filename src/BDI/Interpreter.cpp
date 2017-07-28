@@ -5,6 +5,7 @@
 #include "Interpreter.h"
 
 #include <random>
+#include <condition_variable>
 
 extern int g_agentID;
 
@@ -60,43 +61,56 @@ void Interpreter::update() {
 
 }
 
+
 void Interpreter::start(){
     // TODO: Implement locking mechanisms for beliefs and goals databases
-    // TODO: Start Different Thread of Sensor Input
+    running = true;
     bdi = thread(&Interpreter::run, this);
     t_printBeliefs = thread(&Interpreter::printBeliefs, this);
 }
 
-Interpreter::~Interpreter() {
+
+
+void Interpreter::stop() {
+    running = false;
     if (bdi.joinable()) bdi.join();
+    lk.unlock();
+    cv.notify_all();
     if (t_printBeliefs.joinable()) t_printBeliefs.join();
 }
 
-void Interpreter::setBeliefs(Beliefs beliefs) {
+
+Interpreter::~Interpreter() {
+    stop();
+}
+
+
+void Interpreter::setBeliefs(shared_ptr<map<string, shared_ptr<Belief>>> beliefs) {
     m_beliefs = beliefs;
 }
+
 
 void Interpreter::setGoals(Goals goals) {
     m_goals = goals;
 }
 
+
 void Interpreter::run(){
-
-    while (true){
+    while (running){
         update();
-        this_thread::sleep_for(chrono::milliseconds(500));
+        cv.wait_for(lk, 500ms, [&](){return !running;});
     }
-
 }
+
 
 void Interpreter::printBeliefs() {
 
-    while(true) {
+    while(running) {
         cout << "\nCurrent Beliefs:" << endl;
         for (auto bPair : *m_beliefs) {
             cout << "\t" << bPair.first << ": " << *bPair.second << endl;
         }
         cout << endl;
-        this_thread::sleep_for(chrono::milliseconds(30000));
+        cv.wait_for(lk, 30000ms, [&](){return !running;});
     }
 }

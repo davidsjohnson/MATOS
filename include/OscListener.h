@@ -49,12 +49,16 @@ public:
      */
     void start();
 
+
+    void stop();
+
 private:
 
-    int                           m_port;
-    map<string, CallbackFunction> messages;
+    int                                     m_port;
+    map<string, CallbackFunction>           messages;
 
     thread t;
+    shared_ptr<UdpListeningReceiveSocket>   m_socket;
 
 
     /**

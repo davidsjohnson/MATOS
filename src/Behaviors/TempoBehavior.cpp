@@ -2,6 +2,7 @@
 // Created by David Johnson on 4/26/17.
 //
 
+#include <Belief.h>
 #include "TempoBehavior.h"
 
 extern int g_agentID;
@@ -15,7 +16,9 @@ TempoBehavior::TempoBehavior(Goal g) : goal(g)
  * @param beliefs
  * @param oscMonitor
  */
-void TempoBehavior::init(Beliefs& beliefs, AgentMonitor& oscMonitor){
+void TempoBehavior::init(Beliefs beliefs, shared_ptr<AgentMonitor> oscMonitor){
+
+    m_beliefs = beliefs;
 
     // Initialize with OSC Input Function from Neighbors
     CallbackFunction tempoIn = [&](const osc::ReceivedMessage& message) {
@@ -23,13 +26,13 @@ void TempoBehavior::init(Beliefs& beliefs, AgentMonitor& oscMonitor){
         // Add (or update) a belief for Tempo message from a neighbor
         try{
             float tempo = arg->AsFloat();  // only one argument in a tempo message (if there are more they will get ignored)
-            (*beliefs)[message.AddressPattern()] = make_shared<Belief>("tempo", tempo);
+            (*m_beliefs)[message.AddressPattern()] = make_shared<Belief>("tempo", tempo);
         }
         catch(exception e){
             cout << "Error Adding Tempo Belief: " << e.what() << endl;
         }
     };
-    oscMonitor.addFunction("/tempo/.*", tempoIn);
+    oscMonitor->addFunction("/tempo/.*", tempoIn);
 }
 
 
@@ -40,11 +43,11 @@ void TempoBehavior::init(Beliefs& beliefs, AgentMonitor& oscMonitor){
  * @param beliefs - Pointer to the set of current Agent Beliefs
  * @param blfParams - map containing parameters for all goals
  */
-void TempoBehavior::processBeliefs(const Beliefs beliefs, map<string, float>& blfParams) {
+void TempoBehavior::processBeliefs(Beliefs beliefs, map<string, float> &blfParams) {
 
     // ##### Process Beliefs to extract goal parameters
     vector<float> tempos;
-    for (auto beliefPair : *beliefs){
+    for (auto beliefPair : *m_beliefs){
         Belief b = *beliefPair.second;
 
         if(b.paramName == "tempo"){

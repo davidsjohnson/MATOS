@@ -4,13 +4,15 @@
 
 #include "Agent.h"
 
-Agent::Agent(int agentID,  map<int, pair<string, int>> neighbors, const string& pdFile, const int& oscPort, const int num_states) :
-        id(agentID), oscPort(oscPort), patchFile(pdFile),
-        neighbors(neighbors), patch(pdFile), n_states(num_states), goals(make_shared<vector<Goal, allocator<Goal>>>()),
-        oscMonitor(oscPort), sensorMonitor(oscPort+1000),
+Agent::Agent(int agentID,  map<int, pair<string, int>> neighbors, const string& pdFile, bool master, int oscPort, const int num_states) :
+        id(agentID), oscPort(oscPort), patchFile(pdFile), master(master),
+        neighbors(neighbors), patch(pdFile), n_states(num_states),
+        goals(make_shared<vector<Goal, allocator<Goal>>>()),
+        agentMonitor(make_shared<AgentMonitor>(oscPort)), sensorMonitor(oscPort+1000),
         beliefs(make_shared<map<string, shared_ptr<Belief>>>()), bdi(),
-        behaviors()
+        behaviors(), timeline(agentID, patch, master)
 {
+
 
     //TODO: Research MultiAgent Decision Making processes - voting techniques
 
@@ -20,6 +22,8 @@ Agent::Agent(int agentID,  map<int, pair<string, int>> neighbors, const string& 
     for (pair<int, pair<string, int>> n : neighbors){
         shared_ptr<OscSender> o = make_shared<OscSender>(n.second.second, n.second.first);
         oscOuts.push_back(o);
+
+        timeline.addNeighbor(n.first, o);
     }
 
 
@@ -39,7 +43,8 @@ Agent::Agent(int agentID,  map<int, pair<string, int>> neighbors, const string& 
                 else{
                     tempo = worldTempo/rnd;
                 }
-                patch.sendTempo( tempo);
+                patch.sendTempo( tempo);        // TODO:  Can remove this...
+                timeline.setTempo(tempo);
             }
         };
 
@@ -110,6 +115,7 @@ Agent::Agent(int agentID,  map<int, pair<string, int>> neighbors, const string& 
         try{
             float value = arg->AsFloat();  // for now only one argument for proximity as values come from TouchOSC for demo...
             patch.sendTempo(value*240);
+            timeline.setTempo(value*240);
             cout << "New Tempo="<< value*240 << endl;
         }
         catch(exception e){
@@ -149,28 +155,51 @@ Agent::Agent(int agentID,  map<int, pair<string, int>> neighbors, const string& 
     sensorMonitor.addFunction("/tempo/.*", tempoCallback);
     sensorMonitor.addFunction("/start/.*", startCallback);
     sensorMonitor.addFunction("/pad/.*", padCallback);
-    sensorMonitor.start();                                      // Start the sensor
 
     //Initialize the Patch
     patch.init(this);
 
 }
 
+Agent::~Agent() {
+    stop();
+}
+
 
 void Agent::start() {
 
-    for (auto b : behaviors){
-        b->init(beliefs, oscMonitor);
+    for (auto b : behaviors) {
+        b->init(beliefs, agentMonitor);
     }
+
 
     srand(time(NULL));
     int randTempo = rand() % 50 + 50;
-    patch.sendStart(randTempo);
 
+    // Start the sensor
+    sensorMonitor.start();
     bdi.start();
-    oscMonitor.start();
+    agentMonitor->start();
+
+    timeline.init(agentMonitor);
+    timeline.syncAllAgents();
+    timeline.setTempo(randTempo);
+    timeline.start();
+    cout << "Agent " << id << " Ready and Started" << endl;
+
 }
 
+
+
+void Agent::stop() {
+
+    timeline.stop();
+    sensorMonitor.stop();
+    agentMonitor->stop();
+    bdi.stop();
+    patch.closePatch();
+
+}
 
 void  Agent::updateState(string paramName, float value) {
 
@@ -193,7 +222,6 @@ void Agent::updateNeighbors(string paramName, float value) {
         ss << "/" << paramName << "/" << getAgentID();
         n->sendOsc(ss.str(), value);
     }
-
 }
 
 
@@ -203,4 +231,8 @@ ostream& operator<<(ostream& os, const Agent& agent){
     os << "\n\t Playing Patch: " << agent.patchFile;
 
     return os;
+}
+
+bool Agent::isMaster() {
+    return master;
 }

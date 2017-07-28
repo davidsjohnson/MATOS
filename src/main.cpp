@@ -21,6 +21,7 @@ int main(int argc, char* argv[]) {
             ("p,patchfile", "Path to Pure Data Patch", cxxopts::value<string>(defaultPatchFile), "PD Patch Location")
             ("n,neighborsfile", "Path to the neighbor file", cxxopts::value<string>(), "Neighbors File Location")
             ("s,numberstates", "The number of states available for the patch", cxxopts::value<int>(), "Number of PD States")
+            ("m,master", "Indicates the agent is the master of all neighbors", cxxopts::value<bool>(), "Master Status")
             ;
 
     options.parse(argc, argv);
@@ -31,6 +32,7 @@ int main(int argc, char* argv[]) {
     string pdFile = options["p"].as<string>();
     string nbFile = options["n"].as<string>();
     int n_states = options["s"].as<int>();
+    bool master = options["m"].as<bool>();
 
     // Loading neighbors file
     map<int, pair<string, int>> neighbors;
@@ -73,10 +75,16 @@ int main(int argc, char* argv[]) {
 
     // Starting Agent with Parameters from Command Line
     g_agentID = agentID;
-    Agent agent(agentID, neighbors, pdFile, oscPort, n_states);
-    cout << "Started Agent:\n";
+    Agent agent(agentID, neighbors, pdFile, master, oscPort, n_states);
+    if (master)
+        cout << "Started Agent as Master:\n";
+    else
+        cout << "Started Agent:\n";
     cout << agent << endl;
+
     agent.start();
+
+    pause();
 
     return 0;
 }

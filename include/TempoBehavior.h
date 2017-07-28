@@ -28,7 +28,7 @@ public:
      * @param beliefs - reference to the agents belief database
      * @param agentMonitor - the monitor that is listening for state changes
      */
-    virtual void init(Beliefs& beliefs, AgentMonitor& oscMonitor) override;
+    void init(Beliefs beliefs, shared_ptr<AgentMonitor> oscMonitor) override;
 
 
     /**
@@ -37,7 +37,7 @@ public:
      * @param beliefs - the set of current Agent Beliefs
      * @param blfParams - map containing parameters required for all goals
      */
-    virtual void processBeliefs(const Beliefs beliefs, map<string, float>& blfParams) override;
+    void processBeliefs(Beliefs beliefs, map<string, float> &blfParams) override;
 
 
     /**
@@ -46,10 +46,11 @@ public:
      * @param blfParams - map of generated parameter values
      * @param actions - a list of actions to perform and if they are required or not
      */
-    virtual void generateAction(map<string, float>& blfParams, vector<pair<bool, Goal>>& actionGoals) override;
+    void generateAction(map<string, float>& blfParams, vector<pair<bool, Goal>>& actionGoals) override;
 
 private:
     Goal goal;
+    shared_ptr<map<string, shared_ptr<Belief>>> m_beliefs;
 
 };
 
